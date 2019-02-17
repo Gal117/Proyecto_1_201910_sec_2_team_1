@@ -75,13 +75,12 @@ public class ClaseCargar {
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 				pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-				
+			
 			}
 			lectorEnero.close();
 
 			CSVReader lectorFebrero = new CSVReader(new FileReader(rutaFebrero));
 			String[] lineaFebrero = lectorFebrero.readNext();
-			
 			while ((lineaFebrero = lectorFebrero.readNext()) != null) {
 				String obID = lineaFebrero[0];
 				int objectID = Integer.parseInt(obID);
@@ -109,7 +108,7 @@ public class ClaseCargar {
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 				pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+				
 			}
 			lectorFebrero.close();
 
@@ -174,7 +173,7 @@ public class ClaseCargar {
 				cola.enqueue(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 				pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));				
 			}
 			lectorAbril.close();
 		} catch (IOException e) {
