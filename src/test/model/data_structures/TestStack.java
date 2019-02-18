@@ -8,7 +8,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 import model.data_structures.Pila;
 
-public class TestStack {
+public class TestStack extends TestCase {
 
 	private Pila<Integer> stack;
 	
