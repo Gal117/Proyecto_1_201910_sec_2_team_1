@@ -51,7 +51,7 @@ public class MovingViolationsManagerView
 	
 	public void printMovingViolationsReq2(IQueue<VOMovingViolations> resultados2) {
 		for(VOMovingViolations v: resultados2) {
-			System.out.println("ObjectID: " + v.objectId() + ", issued: " + v.getTicketIssueDate());
+			System.out.println("ObjectID: " + v.darObjectID() + ", issued: " + v.darFecha());
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class MovingViolationsManagerView
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t STREETSEGID\t ADDRESS_ID");
 
 		for(VOMovingViolations v: resultados4) {
-			System.out.println( v.objectId() + "\t" + v.getTicketIssueDate() + "\t" + v.getStreetSegId() + "\t" + v.getAddressId());
+			System.out.println( v.darObjectID() + "\t" + v.darFecha() + "\t" + v.darIDCalle() + "\t" + v.darDireccion());
 		}
 	}
 	
@@ -74,16 +74,17 @@ public class MovingViolationsManagerView
 	public void printMovingViolationReq6(IStack<VOMovingViolations> resultados6) {
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t TOTALPAID");
 		for(VOMovingViolations v: resultados6) {
-			System.out.println( v.objectId() + "\t" + v.getTicketIssueDate() + "\t" + v.getTotalPaid());
+			System.out.println( v.darObjectID() + "\t" + v.darFecha() + "\t" + v.darTotalPaid());
 		}
 	}
 	
 	public void printMovingViolationsReq7(IQueue<VOMovingViolations> resultados7) {
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t VIOLATIONDESC");
 		for(VOMovingViolations v: resultados7) {
-			System.out.println( v.objectId() + "\t" + v.getTicketIssueDate() + "\t" + v.getViolationDescription());
+			System.out.println( v.darObjectID() + "\t" + v.darFecha() + "\t" + v.darDescripcion());
 		}
 	}
+	
 	
 	public void printMovingViolationsByHourReq10() {
 		System.out.println("Porcentaje de infracciones que tuvieron accidentes por hora. 2018");

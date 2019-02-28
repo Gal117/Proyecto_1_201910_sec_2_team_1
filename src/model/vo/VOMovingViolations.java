@@ -1,17 +1,21 @@
 package model.vo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Representation of a Trip object
  */
-public class VOMovingViolations {
+public class VOMovingViolations implements Comparable<VOMovingViolations>{
 
 	/**
-	 * Atributo que da el ID de la infracción
+	 * Atributo que da el ID de la infracciï¿½n
 	 */
 	private int objectID;
 
 	/**
-	 * Atributo que da la ubicación de la infracción
+	 * Atributo que da la ubicaciï¿½n de la infracciï¿½n
 	 */
 	private String addressID;
 
@@ -21,22 +25,22 @@ public class VOMovingViolations {
 	private String streetSegID;
 
 	/**
-	 * Atributo que da el total a pagar por infracción (FINEAMT)
+	 * Atributo que da el total a pagar por infracciï¿½n (FINEAMT)
 	 */
 	private int fineAMT;
 
 	/**
-	 * Atributo que da el dinero que efectivamente se pagó por infracción (TOALPAID)
+	 * Atributo que da el dinero que efectivamente se pagï¿½ por infracciï¿½n (TOALPAID)
 	 */
 	private int totalPaid;
 
 	/**
-	 * Atributo que da el dinero extra a pagar por infracción (penalty1)
+	 * Atributo que da el dinero extra a pagar por infracciï¿½n (penalty1)
 	 */
 	private int penalty1;
 
 	/**
-	 * Atributo que da el dinero extra a pagar por infracción (penalty2)
+	 * Atributo que da el dinero extra a pagar por infracciï¿½n (penalty2)
 	 */
 	private int penalty2;
 
@@ -46,33 +50,33 @@ public class VOMovingViolations {
 	private String accidentIndicator;
 
 	/**
-	 * Atributo que da la fecha de la infracción
+	 * Atributo que da la fecha de la infracciï¿½n
 	 */
 	private String ticketIssueDate;
 
 	/**
-	 * Atributo que da el tipo de infracción
+	 * Atributo que da el tipo de infracciï¿½n
 	 */
 	private String violationCode;
 
 	/**
-	 * Atributo que da la descripción de la infracción
+	 * Atributo que da la descripciï¿½n de la infracciï¿½n
 	 */
 	private String violationDescription;
 
 	/**
 	 * Constructor VOMovingViolations
-	 * @param pObjectId identificador de la infracción
-	 * @param pIssueDate fecha de la infracción
-	 * @param pViolationCode tipo de infracción
-	 * @param pFineAMT dinero a pagar por la infracción
-	 * @param pAddress direccion de la infracción
-	 * @param pStreetSegId identificador de segmento de calle con infracción
-	 * @param pTotalPaid total que se pago efectivamente en la infracción
-	 * @param pDescrption descripcion de la infracción
-	 * @param pAccidentIndicator indica si hubo accidente o no en la infracción
-	 * @param pPenal1 extra por infracción
-	 * @param pPenal2 extra por infracción
+	 * @param pObjectId identificador de la infracciï¿½n
+	 * @param pIssueDate fecha de la infracciï¿½n
+	 * @param pViolationCode tipo de infracciï¿½n
+	 * @param pFineAMT dinero a pagar por la infracciï¿½n
+	 * @param pAddress direccion de la infracciï¿½n
+	 * @param pStreetSegId identificador de segmento de calle con infracciï¿½n
+	 * @param pTotalPaid total que se pago efectivamente en la infracciï¿½n
+	 * @param pDescrption descripcion de la infracciï¿½n
+	 * @param pAccidentIndicator indica si hubo accidente o no en la infracciï¿½n
+	 * @param pPenal1 extra por infracciï¿½n
+	 * @param pPenal2 extra por infracciï¿½n
 	 */
 	public VOMovingViolations(int pObjectId, String pIssueDate, String pViolationCode, int pFineAMT, String pAddress, String pStreetSegId, int pTotalPaid, String pDescrption, String pAccidentIndicator, int pPenal1, int pPenal2 ){
 		
@@ -133,4 +137,42 @@ public class VOMovingViolations {
 	public String darDescripcion(){
 		return violationDescription;
 	}
+
+	@Override
+	public int compareTo(VOMovingViolations o) {
+			// TODO implementar la comparacion "natural" de la clase
+			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			int comparacion = 0;
+			try {
+				Date fecha1 = formato.parse(ticketIssueDate);
+				Date fecha2 = formato.parse(o.ticketIssueDate);
+				comparacion = fecha1.compareTo(fecha2);
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(comparacion < 0){
+				comparacion =  -1;
+			}
+			
+			else if(comparacion > 0){
+				comparacion =  1;
+			}
+			
+			else if(comparacion == 0){
+				if(this.objectID < o.objectID){
+					comparacion =   -1;
+				}
+				else if(this.objectID > o.objectID){
+					comparacion = 1;
+				}
+				
+				else if(this.objectID == o.objectID){
+					comparacion =  0;
+				}
+			}
+			return comparacion;
+		}
+
 }
