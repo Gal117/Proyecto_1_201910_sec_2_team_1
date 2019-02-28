@@ -5,61 +5,132 @@ package model.vo;
  */
 public class VOMovingViolations {
 
-	
 	/**
-	 * @return id - Identificador Ãºnico de la infracciÃ³n
+	 * Atributo que da el ID de la infracción
 	 */
-	public int objectId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}	
-	
-	
-	/**
-	 * @return location - DirecciÃ³n en formato de texto.
-	 */
-	public String getLocation() {
-		// TODO Auto-generated method stub
-		return "";
-	}
+	private int objectID;
 
 	/**
-	 * @return date - Fecha cuando se puso la infracciÃ³n .
+	 * Atributo que da la ubicación de la infracción
 	 */
-	public String getTicketIssueDate() {
-		// TODO Auto-generated method stub
-		return "";
-	}
-	
+	private String addressID;
+
 	/**
-	 * @return totalPaid - Cuanto dinero efectivamente pagÃ³ el que recibiÃ³ la infracciÃ³n en USD.
+	 * Atributo que da el identificador del segmento de calle donde hubo infraccion.
 	 */
-	public int getTotalPaid() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
+	private String streetSegID;
+
 	/**
-	 * @return accidentIndicator - Si hubo un accidente o no.
+	 * Atributo que da el total a pagar por infracción (FINEAMT)
 	 */
-	public String  getAccidentIndicator() {
-		// TODO Auto-generated method stub
-		return "";
-	}
+	private int fineAMT;
+
+	/**
+	 * Atributo que da el dinero que efectivamente se pagó por infracción (TOALPAID)
+	 */
+	private int totalPaid;
+
+	/**
+	 * Atributo que da el dinero extra a pagar por infracción (penalty1)
+	 */
+	private int penalty1;
+
+	/**
+	 * Atributo que da el dinero extra a pagar por infracción (penalty2)
+	 */
+	private int penalty2;
+
+	/**
+	 * Atributo que da si hubo accidente o no
+	 */
+	private String accidentIndicator;
+
+	/**
+	 * Atributo que da la fecha de la infracción
+	 */
+	private String ticketIssueDate;
+
+	/**
+	 * Atributo que da el tipo de infracción
+	 */
+	private String violationCode;
+
+	/**
+	 * Atributo que da la descripción de la infracción
+	 */
+	private String violationDescription;
+
+	/**
+	 * Constructor VOMovingViolations
+	 * @param pObjectId identificador de la infracción
+	 * @param pIssueDate fecha de la infracción
+	 * @param pViolationCode tipo de infracción
+	 * @param pFineAMT dinero a pagar por la infracción
+	 * @param pAddress direccion de la infracción
+	 * @param pStreetSegId identificador de segmento de calle con infracción
+	 * @param pTotalPaid total que se pago efectivamente en la infracción
+	 * @param pDescrption descripcion de la infracción
+	 * @param pAccidentIndicator indica si hubo accidente o no en la infracción
+	 * @param pPenal1 extra por infracción
+	 * @param pPenal2 extra por infracción
+	 */
+	public VOMovingViolations(int pObjectId, String pIssueDate, String pViolationCode, int pFineAMT, String pAddress, String pStreetSegId, int pTotalPaid, String pDescrption, String pAccidentIndicator, int pPenal1, int pPenal2 ){
 		
-	/**
-	 * @return description - DescripciÃ³n textual de la infracciÃ³n.
-	 */
-	public String  getViolationDescription() {
-		// TODO Auto-generated method stub
-		return "";
+		objectID = pObjectId;
+		addressID = pAddress;
+		streetSegID = pStreetSegId;
+		fineAMT = pFineAMT;
+		totalPaid = pTotalPaid;
+		penalty1 = pPenal1;
+		penalty2 = pPenal2;
+		accidentIndicator = pAccidentIndicator;
+		ticketIssueDate = pIssueDate;
+		violationCode = pViolationCode;
+		violationDescription = pDescrption;
+
 	}
 	
-	public String getStreetSegId() {
-		return "";
+	public int darObjectID(){
+		return objectID;
 	}
 	
-	public String getAddressId() {
-		return "";
+	public String darDireccion(){
+		return addressID;
+	}
+
+	public String darIDCalle(){
+		return streetSegID;
+	}
+	
+	public int darFINEAMT(){
+		return fineAMT;
+	}
+	
+	public int darTotalPaid(){
+		return totalPaid;
+	}
+	
+	public int darPenal1(){
+		return penalty1;
+	}
+	
+	public int darPenal2(){
+		return penalty2;
+	}
+	
+	public String darAccidentIndicator(){
+		return accidentIndicator;
+	}
+	
+	public String darFecha(){
+		return ticketIssueDate;
+	}
+	
+	public String darViolationCode(){
+		return violationCode;
+	}
+	
+	public String darDescripcion(){
+		return violationDescription;
 	}
 }
