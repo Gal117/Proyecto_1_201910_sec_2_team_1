@@ -40,7 +40,41 @@ public class Controller {
 	 */
 	public static final String rutaAbril = "./data/Moving_Violations_Issued_in_April_2018.csv";
 
+	/**
+	 * Ruta de archivo CSV Mayo.
+	 */
+	public static final String rutaMayo = "./data/Moving_Violations_Issued_in_May_2018.csv";
+	/**
+	 * Ruta de archivo CSV Junio.
+	 */
+	public static final String rutaJunio = "./data/Moving_Violations_Issued_in_June_2018.csv";
+	/**
+	 * Ruta de archivo CSV Julio.
+	 */
+	public static final String rutaJulio = "./data/Moving_Violations_Issued_in_July_2018.csv";
+	/**
+	 * Ruta de archivo CSV Agosto.
+	 */
+	public static final String rutaAgosto = "./data/Moving_Violations_Issued_in_August_2018.csv";
+	/**
+	 * Ruta de archivo CSV Septiembre.
+	 */
+	public static final String rutaSeptiembre = "./data/Moving_Violations_Issued_in_September_2018.csv";
+	/**
+	 * Ruta de archivo CSV Octubre.
+	 */
+	public static final String rutaOctubre = "./data/Moving_Violations_Issued_in_October_2018.csv";
+	/**
+	 * Ruta de archivo CSV Noviembre.
+	 */
+	public static final String rutaNoviembre = "./data/Moving_Violations_Issued_in_November_2018.csv";
+	/**
+	 * Ruta de archivo CSV Diciembre.
+	 */
+	public static final String rutaDiciembre = "./data/Moving_Violations_Issued_in_December_2018.csv";
+
 	private IStack<VOMovingViolations> pila;
+	
 	
 	public Controller() {
 		view = new MovingViolationsManagerView();
