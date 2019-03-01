@@ -141,6 +141,7 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 	@Override
 	public int compareTo(VOMovingViolations o) {
 			// TODO implementar la comparacion "natural" de la clase
+		
 			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			int comparacion = 0;
 			try {

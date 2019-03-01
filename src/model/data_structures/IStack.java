@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import model.vo.VOMovingViolations;
+
 public interface IStack<T> extends Iterable<T>{
 	
 	/**
@@ -24,5 +26,6 @@ public interface IStack<T> extends Iterable<T>{
 	 * Quita y retorna el elemento agregado más recientemente
 	 * @return el elemento agregado más recientemente
 	 */
-	public T pop();	
+	public T pop();
+
 }

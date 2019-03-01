@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 
+import model.data_structures.ArregloDinamico;
+import model.data_structures.Cola;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.Pila;
@@ -76,12 +78,14 @@ public class Controller {
 	public static final String rutaDiciembre = "./data/Moving_Violations_Issued_in_December_2018.csv";
 
 	private IStack<VOMovingViolations> pila;
+	private ArregloDinamico<VOMovingViolations> arreglo;
 
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
 		//TODO inicializar pila 
 		pila=new Pila<VOMovingViolations>();
+		arreglo=new ArregloDinamico<VOMovingViolations>(40000);
 	}
 
 	public void run() {
@@ -269,7 +273,7 @@ public class Controller {
 					String issueDate = lineaEnero[13];
 					String violationCode = lineaEnero[14];
 					String violationDesc = lineaEnero[15];
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -301,7 +305,7 @@ public class Controller {
 					String violationCode = lineaFebrero[14];
 					String violationDesc = lineaFebrero[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -333,7 +337,7 @@ public class Controller {
 					String violationCode = lineaMarzo[14];
 					String violationDesc = lineaMarzo[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -364,7 +368,7 @@ public class Controller {
 					String issueDate = lineaAbril[13];
 					String violationCode = lineaAbril[14];
 					String violationDesc = lineaAbril[15];
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));				
 				}
 				lectorAbril.close();
@@ -397,7 +401,7 @@ public class Controller {
 					String violationCode = lineaMayo[14];
 					String violationDesc = lineaMayo[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -429,7 +433,7 @@ public class Controller {
 					String violationCode = lineaJunio[14];
 					String violationDesc = lineaJunio[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -461,7 +465,7 @@ public class Controller {
 					String violationCode = lineaJulio[14];
 					String violationDesc = lineaJulio[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -493,7 +497,7 @@ public class Controller {
 					String violationCode = lineaAgosto[14];
 					String violationDesc = lineaAgosto[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -528,7 +532,7 @@ public class Controller {
 					String violationCode = lineaSeptiembre[14];
 					String violationDesc = lineaSeptiembre[15];
 
-					pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
@@ -561,7 +565,7 @@ public class Controller {
 				String violationCode = lineaOctubre[14];
 				String violationDesc = lineaOctubre[15];
 
-				pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 			}
@@ -593,7 +597,7 @@ public class Controller {
 				String violationCode = lineaNoviembre[14];
 				String violationDesc = lineaNoviembre[15];
 
-				pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 			}
@@ -625,7 +629,7 @@ public class Controller {
 				String violationCode = lineaDiciembre[14];
 				String violationDesc = lineaDiciembre[15];
 
-				pila.push(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 			}
@@ -665,21 +669,18 @@ public class Controller {
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
-		// TODO Auto-generated method stub
-		IStack<VOMovingViolations> p=pila;
+		System.out.println("Funciona2");
+		IStack <VOMovingViolations> p=pila.duplicarPila();
+		IQueue<VOViolationCode> c=new Cola<VOViolationCode>();
 		Comparable[] v= new Comparable[pila.size()];
+		System.out.println("Funciona1");
 		for(int i=0;i<pila.size()-1;i++)
 		{
-			v[i]=pila.pop();
-			System.out.println(pila.pop().darFecha());
+			v[i]=p.pop();
 		}
-		System.out.println("-----------");
 		Sort.ordenarQuickSort(v);
-		for(int i=0;i<v.length;i++)
-		{
-			System.out.println(v[i]);
-		}
-		return null;
+		System.out.println("Funciona");
+		return c;
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,

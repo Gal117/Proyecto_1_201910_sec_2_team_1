@@ -66,5 +66,13 @@ public class Pila<T extends Comparable<T>> implements IStack<T> {
 		}
 		return objeto;
 	}
-
+	public IStack<T> duplicarPila()
+	{
+		Pila<T> p=new Pila<>();
+		for(int i=0;i<numElementos;i++)
+		{
+			p.push(this.get(i));
+		}
+		return p;
+	}
 }
