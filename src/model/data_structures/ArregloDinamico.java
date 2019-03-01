@@ -1,11 +1,16 @@
 package model.data_structures;
+
+import java.util.Iterator;
+
+import model.vo.VOMovingViolations;
+
 /**
  * [CODIGO CITADO] En esta clase el c�digo de agregar se tomo del esqueleto del taller 1
  * @author dagar
  *
  * @param <T> Objeto a guardar en ese arreglo dinamico generico
  */
-public class ArregloDinamico<T> {
+public class ArregloDinamico<T>{
 
 	private int tamanoActual;
 	
@@ -49,5 +54,7 @@ public class ArregloDinamico<T> {
 		
 		return elems[pos];
 	}
+
+	
 
 }

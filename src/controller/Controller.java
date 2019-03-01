@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-
 import com.opencsv.CSVReader;
-
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Cola;
 import model.data_structures.IQueue;
@@ -17,7 +16,6 @@ import model.data_structures.IStack;
 import model.data_structures.Pila;
 import model.util.Sort;
 import model.vo.VODaylyStatistic;
-import model.vo.VOMovingViolation;
 import model.vo.VOMovingViolations;
 import model.vo.VOViolationCode;
 import view.MovingViolationsManagerView;
@@ -539,6 +537,7 @@ public class Controller {
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 				}
+
 				lectorSeptiembre.close();
 			}
 			
@@ -564,9 +563,9 @@ public class Controller {
 					penalty2 = 0;
 				}
 				String accidentIndicator = lineaOctubre[12];
-				String issueDate = lineaOctubre[13];
-				String violationCode = lineaOctubre[14];
-				String violationDesc = lineaOctubre[15];
+				String issueDate = lineaOctubre[14];
+				String violationCode = lineaOctubre[15];
+				String violationDesc = lineaOctubre[16];
 
 				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
@@ -596,9 +595,9 @@ public class Controller {
 					penalty2 = 0;
 				}
 				String accidentIndicator = lineaNoviembre[12];
-				String issueDate = lineaNoviembre[13];
-				String violationCode = lineaNoviembre[14];
-				String violationDesc = lineaNoviembre[15];
+				String issueDate = lineaNoviembre[14];
+				String violationCode = lineaNoviembre[15];
+				String violationDesc = lineaNoviembre[16];
 
 				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
@@ -628,9 +627,9 @@ public class Controller {
 					penalty2 = 0;
 				}
 				String accidentIndicator = lineaDiciembre[12];
-				String issueDate = lineaDiciembre[13];
-				String violationCode = lineaDiciembre[14];
-				String violationDesc = lineaDiciembre[15];
+				String issueDate = lineaDiciembre[14];
+				String violationCode = lineaDiciembre[15];
+				String violationDesc = lineaDiciembre[16];
 
 				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
@@ -652,7 +651,19 @@ public class Controller {
 	}
 
 	public boolean verifyObjectIDIsUnique() {
-		return false;
+		
+		boolean unico = true;
+		
+		for(int i = 0; i< arreglo.darTamano() && unico; i++){
+			
+			VOMovingViolations obj1 = arreglo.darElem(i);
+			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
+				unico = false;
+				break;
+			}
+		}
+		
+		return unico;
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
@@ -730,7 +741,13 @@ public class Controller {
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
-		// TODO Auto-generated method stub
+		
+		IQueue<VOMovingViolations> lista= new Cola<VOMovingViolations>();
+		
+		
+		
+		
+		
 		return null;
 	}
 
