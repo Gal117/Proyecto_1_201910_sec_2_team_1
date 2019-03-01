@@ -653,8 +653,7 @@ public class Controller {
 	public boolean verifyObjectIDIsUnique() {
 		
 		boolean unico = true;
-		
-		for(int i = 0; i< arreglo.darTamano() && unico; i++){
+		for(int i = 0; i< arreglo.darTamano()-1 && unico; i++){
 			
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
@@ -684,8 +683,14 @@ public class Controller {
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		IQueue<VOViolationCode> c=new Cola<VOViolationCode>();
-		Comparable<VOMovingViolations>[] copia=generarMuestra(arreglo.darTamano());
+		Comparable<VOMovingViolations>[] copia=obtenerCopia(arreglo);
+		for(int i = 0; i<100; i++){
+			System.out.println(copia[i]);
+		}
 		Sort.ordenarQuickSort(copia);
+		for(int i = 0; i<100; i++){
+			System.out.println(copia[i]);
+		}
 		VOMovingViolations temp=(VOMovingViolations) copia[0];
 		int plata=0;
 		String code=temp.darViolationCode();
@@ -717,21 +722,12 @@ public class Controller {
 		}
 		return c;
 	}
-	@SuppressWarnings("unchecked")
-	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
+	public Comparable<VOMovingViolations> [ ] obtenerCopia( ArregloDinamico<VOMovingViolations> arreglo2)
 	{
-		muestra = new Comparable[ n ];
-		// TODO Llenar la muestra aleatoria con los datos guardados en la estructura de datos
-		ArregloDinamico<VOMovingViolations> e = arreglo;
-		int pos=0;
-		while(pos<n)
-		{
-			muestra[pos] = e.darElem(pos);
- 			pos++;
-		}
-
-		return muestra;
-		
+		Comparable<VOMovingViolations> [ ] copia = new Comparable[ arreglo2.darTamano() ]; 
+		for ( int i = 0; i < arreglo2.darTamano(); i++)
+		{    copia[i] = arreglo2.darElem(i);    }
+		return copia;
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
