@@ -1,6 +1,6 @@
 package model.data_structures;
 /**
- * [CODIGO CITADO] En esta clase el código de agregar se tomo del esqueleto del taller 1
+ * [CODIGO CITADO] En esta clase el cï¿½digo de agregar se tomo del esqueleto del taller 1
  * @author dagar
  *
  * @param <T> Objeto a guardar en ese arreglo dinamico generico
@@ -49,4 +49,5 @@ public class ArregloDinamico<T> {
 		
 		return elems[pos];
 	}
+
 }

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.opencsv.CSVReader;
 
@@ -16,6 +17,7 @@ import model.data_structures.IStack;
 import model.data_structures.Pila;
 import model.util.Sort;
 import model.vo.VODaylyStatistic;
+import model.vo.VOMovingViolation;
 import model.vo.VOMovingViolations;
 import model.vo.VOViolationCode;
 import view.MovingViolationsManagerView;
@@ -79,13 +81,14 @@ public class Controller {
 
 	private IStack<VOMovingViolations> pila;
 	private ArregloDinamico<VOMovingViolations> arreglo;
+	private Comparable[] muestra;
 
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
 		//TODO inicializar pila 
 		pila=new Pila<VOMovingViolations>();
-		arreglo=new ArregloDinamico<VOMovingViolations>(40000);
+		arreglo=new ArregloDinamico<VOMovingViolations>(160000);
 	}
 
 	public void run() {
@@ -669,18 +672,55 @@ public class Controller {
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
-		System.out.println("Funciona2");
-		IStack <VOMovingViolations> p=pila.duplicarPila();
 		IQueue<VOViolationCode> c=new Cola<VOViolationCode>();
-		Comparable[] v= new Comparable[pila.size()];
-		System.out.println("Funciona1");
-		for(int i=0;i<pila.size()-1;i++)
+		Comparable<VOMovingViolations>[] copia=generarMuestra(arreglo.darTamano());
+		Sort.ordenarQuickSort(copia);
+		VOMovingViolations temp=(VOMovingViolations) copia[0];
+		int plata=0;
+		String code=temp.darViolationCode();
+		int contador=0;
+		for(int i=0;i<copia.length;i++)
 		{
-			v[i]=p.pop();
+			VOMovingViolations actual=(VOMovingViolations) copia[i];
+			int plataActual=actual.darFINEAMT();
+			String codeActual=actual.darViolationCode();
+			if(code!=codeActual)
+			{
+				if(plataActual<limiteSup5 && plataActual>limiteInf5)
+				{
+					int promedio=plata/contador;
+					c.enqueue(new VOViolationCode(codeActual, promedio));
+				}
+				code=codeActual;
+				plata=0;
+				contador=0;
+			}
+			else
+			{
+				plata+=plataActual;
+				contador++;
+			}
+
+
+			
 		}
-		Sort.ordenarQuickSort(v);
-		System.out.println("Funciona");
 		return c;
+	}
+	@SuppressWarnings("unchecked")
+	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
+	{
+		muestra = new Comparable[ n ];
+		// TODO Llenar la muestra aleatoria con los datos guardados en la estructura de datos
+		ArregloDinamico<VOMovingViolations> e = arreglo;
+		int pos=0;
+		while(pos<n)
+		{
+			muestra[pos] = e.darElem(pos);
+ 			pos++;
+		}
+
+		return muestra;
+		
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
