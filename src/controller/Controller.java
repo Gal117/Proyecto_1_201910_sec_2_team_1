@@ -11,6 +11,8 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
+import model.data_structures.Pila;
+import model.util.Sort;
 import model.vo.VODaylyStatistic;
 import model.vo.VOMovingViolations;
 import model.vo.VOViolationCode;
@@ -79,6 +81,7 @@ public class Controller {
 	public Controller() {
 		view = new MovingViolationsManagerView();
 		//TODO inicializar pila 
+		pila=new Pila<VOMovingViolations>();
 	}
 
 	public void run() {
@@ -368,7 +371,6 @@ public class Controller {
 			}
 			
 			else if(numeroCuatrimestre == 2){
-				
 				CSVReader lectorMayo = new CSVReader(new FileReader(rutaMayo));
 				String[] lineaMayo = lectorMayo.readNext();
 				while ((lineaMayo = lectorMayo.readNext()) != null) {
@@ -379,7 +381,7 @@ public class Controller {
 					String fine = lineaMayo[8];
 					int fineAmt = Integer.parseInt(fine);
 					String total = lineaMayo[9];
-					int totalPaid = Integer.parseInt(total);
+					int totalPaid =(int) Double.parseDouble(total);
 					String p1 = lineaMayo[10];
 					int penalty1 = Integer.parseInt(p1);
 					String p2 = lineaMayo[11];
@@ -400,7 +402,7 @@ public class Controller {
 
 				}
 				lectorMayo.close();
-				
+			
 				CSVReader lectorJunio = new CSVReader(new FileReader(rutaJunio));
 				String[] lineaJunio = lectorJunio.readNext();
 				while ((lineaJunio = lectorJunio.readNext()) != null) {
@@ -411,7 +413,7 @@ public class Controller {
 					String fine = lineaJunio[8];
 					int fineAmt = Integer.parseInt(fine);
 					String total = lineaJunio[9];
-					int totalPaid = Integer.parseInt(total);
+					int totalPaid =(int) Double.parseDouble(total);
 					String p1 = lineaJunio[10];
 					int penalty1 = Integer.parseInt(p1);
 					String p2 = lineaJunio[11];
@@ -435,7 +437,7 @@ public class Controller {
 				
 				CSVReader lectorJulio = new CSVReader(new FileReader(rutaJulio));
 				String[] lineaJulio = lectorJulio.readNext();
-				while ((lineaMayo = lectorJulio.readNext()) != null) {
+				while ((lineaJulio = lectorJulio.readNext()) != null) {
 					String obID = lineaJulio[0];
 					int objectID = Integer.parseInt(obID);
 					String address = lineaJulio[3];
@@ -443,7 +445,7 @@ public class Controller {
 					String fine = lineaJulio[8];
 					int fineAmt = Integer.parseInt(fine);
 					String total = lineaJulio[9];
-					int totalPaid = Integer.parseInt(total);
+					int totalPaid =(int) Double.parseDouble(total);
 					String p1 = lineaJulio[10];
 					int penalty1 = Integer.parseInt(p1);
 					String p2 = lineaJulio[11];
@@ -475,7 +477,7 @@ public class Controller {
 					String fine = lineaAgosto[8];
 					int fineAmt = Integer.parseInt(fine);
 					String total = lineaAgosto[9];
-					int totalPaid = Integer.parseInt(total);
+					int totalPaid =(int) Double.parseDouble(total);
 					String p1 = lineaAgosto[10];
 					int penalty1 = Integer.parseInt(p1);
 					String p2 = lineaAgosto[11];
@@ -496,8 +498,9 @@ public class Controller {
 
 				}
 				lectorAgosto.close();
+				
 			}
-			
+
 			else if(numeroCuatrimestre == 3){
 				CSVReader lectorSeptiembre = new CSVReader(new FileReader(rutaSeptiembre));
 				String[] lineaSeptiembre = lectorSeptiembre.readNext();
@@ -663,6 +666,19 @@ public class Controller {
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// TODO Auto-generated method stub
+		IStack<VOMovingViolations> p=pila;
+		Comparable[] v= new Comparable[pila.size()];
+		for(int i=0;i<pila.size()-1;i++)
+		{
+			v[i]=pila.pop();
+			System.out.println(pila.pop().darFecha());
+		}
+		System.out.println("-----------");
+		Sort.ordenarQuickSort(v);
+		for(int i=0;i<v.length;i++)
+		{
+			System.out.println(v[i]);
+		}
 		return null;
 	}
 
