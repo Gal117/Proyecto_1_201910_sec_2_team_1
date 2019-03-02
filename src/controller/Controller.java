@@ -737,8 +737,9 @@ public class Controller {
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		IQueue<VOViolationCode> c = new Cola<VOViolationCode>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONCODE.comparador);
+		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONCODE.comparador,true);
 		VOMovingViolations temp = (VOMovingViolations) copia[0];
+		System.out.println(copia.length);
 		int plata = 0;
 		String code = temp.darViolationCode();
 		int contador = 0;
@@ -783,7 +784,8 @@ public class Controller {
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
 		IQueue<VOMovingViolations> lista= new Cola<VOMovingViolations>();
-
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONDESCRIPTION.comparador,true);
 		LocalTime horaInicial = LocalTime.of(horaInicial7,0);
 		LocalTime horaFinal = LocalTime.of(horaFinal7, 0);
 		
@@ -792,32 +794,37 @@ public class Controller {
 				lista.enqueue(arreglo.darElem(i));
 			}
 		}
-		
-
 		return lista;
-
-
-
-
-		return null;
 	}
-
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
-		// TODO Auto-generated method stub
-		return new double [] {0.0 , 0.0};
+				return new double [] {0.0 , 0.0};
 	}
 
-	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
-		// TODO Auto-generated method stub
-		return 0;
+public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
+		
+		int contador = 0;
+		LocalTime horaInicial = LocalTime.of(horaInicial9,0);
+		LocalTime horaFinal = LocalTime.of(horaFinal9, 0);
+		
+		for (int i = 0; i<arreglo.darTamano(); i++){
+			if((darHora(arreglo.darElem(i).darFecha()).compareTo(horaInicial) > 0) && (darHora(arreglo.darElem(i).darFecha()).compareTo(horaFinal) < 0)){
+				contador++;
+			}
+		}
+		
+		return contador;
 	}
 
-	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
-		// TODO Auto-generated method stub
-		return 0;
+public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
+		
+		double deuda = 0.0;
+		for (int i = 0; i<arreglo.darTamano(); i++){
+			if((convertirFecha(arreglo.darElem(i).darFecha()).compareTo(fechaInicial11) > 0) && (convertirFecha(arreglo.darElem(i).darFecha()).compareTo(fechaFinal11) < 0)){
+				deuda += arreglo.darElem(i).darFINEAMT() + arreglo.darElem(i).darPenal1() + arreglo.darElem(i).darPenal2();
+			}
+		}
+		return deuda;
 	}
-
-
 	/**
 	 * Convertir fecha a un objeto LocalDate
 	 * @param fecha fecha en formato dd/mm/aaaa con dd para dia, mm para mes y aaaa para agno
@@ -843,6 +850,4 @@ public class Controller {
 	public LocalTime darHora(String fecha){
 		return convertirFecha_Hora_LDT(fecha).toLocalTime();
 	}
-
-
 }

@@ -8,14 +8,14 @@ import java.util.Comparator;
 import model.vo.VOMovingViolations;
 
 public class Sort {
-	
+
 	private static	Comparable [] aux=null;
 
 	/**
 	 * Ordenar datos aplicando el algoritmo ShellSort
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarShellSort( Comparable [ ] datos ,Comparator comparador) {
+	public static void ordenarShellSort( Comparable [ ] datos ,Comparator comparador,  boolean b) {
 
 		// TODO implementar el algoritmo ShellSort
 		// Sort a[] into increasing order.
@@ -26,7 +26,7 @@ public class Sort {
 		{  // h-sort the array.
 			for (int i = h; i < N; i++)
 			{  // Insert a[i] among a[i-h], a[i-2*h], a[i-3*h]... .
-				for (int j = i; j >= h && less(datos[j], datos[j-h], comparador); j -= h)
+				for (int j = i; j >= h && less(datos[j], datos[j-h], comparador,b); j -= h)
 					exchange(datos, j, j-h);
 			}
 			h = h/3; }
@@ -36,21 +36,21 @@ public class Sort {
 	 * @param <T>
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarMergeSort( Comparable[ ] datos, Comparator comparador) {
+	public static void ordenarMergeSort( Comparable[ ] datos, Comparator comparador, boolean b) {
 
 		// TODO implementar el algoritmo MergeSort
 		aux = new Comparable[datos.length];    // Allocate space just once.
-		sort(datos, 0, datos.length - 1, comparador);
+		sort(datos, 0, datos.length - 1, comparador,b);
 	}
-	private static void sort(Comparable[] a, int lo, int hi, Comparator comparador)
+	private static void sort(Comparable[] a, int lo, int hi, Comparator comparador, boolean b)
 	{  // Sort a[lo..hi].
 		if (hi <= lo) return;
 		int mid = lo + (hi - lo)/2;
-		sort(a, lo, mid, comparador);       // Sort left half.
-		sort(a, mid+1, hi, comparador);     // Sort right half.
-		merge(a, lo, mid, hi, comparador);  // Merge results (code on page 271).
+		sort(a, lo, mid, comparador,b);       // Sort left half.
+		sort(a, mid+1, hi, comparador,b);     // Sort right half.
+		merge(a, lo, mid, hi, comparador,b);  // Merge results (code on page 271).
 	}
-	public static void merge(Comparable[] a, int lo, int mid, int hi, Comparator comparador)
+	public static void merge(Comparable[] a, int lo, int mid, int hi, Comparator comparador, boolean b)
 	{  // Merge a[lo..mid] with a[mid+1..hi].
 		int i = lo, j = mid+1;
 		for (int k = lo; k <= hi; k++)  // Copy a[lo..hi] to aux[lo..hi].
@@ -58,30 +58,30 @@ public class Sort {
 		for (int k = lo; k <= hi; k++)  // Merge back to a[lo..hi].
 			if      (i > mid)              a[k] = aux[j++];
 			else if (j > hi )              a[k] = aux[i++];
-			else if (less(aux[j], aux[i], comparador)) a[k] = aux[j++];
+			else if (less(aux[j], aux[i], comparador,b)) a[k] = aux[j++];
 			else                           a[k] = aux[i++];
 	}
 	/**
 	 * Ordenar datos aplicando el algoritmo QuickSort
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarQuickSort( Comparable[ ] datos, Comparator comparador  ) {
+	public static void ordenarQuickSort( Comparable[ ] datos, Comparator comparador , boolean b ) {
 
 		int lo=0;
 		int hi=datos.length-1;
 		if (hi <= lo) return;
-		int j = partition(datos, lo, hi, comparador);  // Partition (see page 291).
-		sort(datos, lo, j-1, comparador);              // Sort left part a[lo .. j-1].
-		sort(datos, j+1, hi, comparador);              // Sort right part a[j+1 .. hi].
+		int j = partition(datos, lo, hi, comparador,b);  // Partition (see page 291).
+		sort(datos, lo, j-1, comparador,b);              // Sort left part a[lo .. j-1].
+		sort(datos, j+1, hi, comparador,b);              // Sort right part a[j+1 .. hi].
 	}
-	private static int partition(Comparable[] a, int lo, int hi, Comparator comparador)
+	private static int partition(Comparable[] a, int lo, int hi, Comparator comparador,  boolean b)
 	{  // Partition into a[lo..i-1], a[i], a[i+1..hi].
 		int i = lo, j = hi+1;            // left and right scan indices
 		Comparable v = a[lo];            // partitioning item
 		while (true)
 		{  // Scan right, scan left, check for scan complete, and exchange.
-			while (less(a[++i], v, comparador)) if (i == hi) break;
-			while (less(v, a[--j], comparador)) if (j == lo) break;
+			while (less(a[++i], v, comparador,b)) if (i == hi) break;
+			while (less(v, a[--j], comparador,b)) if (j == lo) break;
 			if (i >= j) break;
 			exchange(a, i, j);
 		}
@@ -95,12 +95,15 @@ public class Sort {
 	 * @param v primer objeto de comparacion
 	 * @param w segundo objeto de comparacion
 	 * @param comparador 
+	 * @param b 
 	 * @return true si v es menor que w usando el metodo compareTo. false en caso contrario.
 	 */
-	private static boolean less(Comparable v, Comparable w, Comparator comparador)
+	private static boolean less(Comparable v, Comparable w, Comparator comparador, boolean b)
 	{
-		// TODO implementar
-		return comparador.compare(v, w) < 0;
+		if(b)
+			return comparador.compare(v, w) < 0;
+		else
+			return comparador.compare(v, w)>0;
 	}
 
 	/**
