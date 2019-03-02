@@ -657,7 +657,7 @@ public class Controller {
 
 		boolean unico = true;
 
-		for(int i = 0; i< arreglo.darTamano() && unico; i++){
+		for(int i = 0; i< arreglo.darTamano()-1 && unico; i++){
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
 				unico = false;
