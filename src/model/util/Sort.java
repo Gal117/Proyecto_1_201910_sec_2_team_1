@@ -3,6 +3,8 @@
  */
 package model.util;
 
+import model.vo.VOMovingViolations;
+
 public class Sort {
 	
 	private static	Comparable [] aux=null;
@@ -11,7 +13,7 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo ShellSort
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarShellSort( Comparable[ ] datos ) {
+	public static void ordenarShellSort( Comparable [ ] datos ) {
 
 		// TODO implementar el algoritmo ShellSort
 		// Sort a[] into increasing order.
@@ -22,10 +24,15 @@ public class Sort {
 		{  // h-sort the array.
 			for (int i = h; i < N; i++)
 			{  // Insert a[i] among a[i-h], a[i-2*h], a[i-3*h]... .
-				for (int j = i; j >= h && less(datos[j], datos[j-h]); j -= h)
+				for (int j = i; j >= h && lessFecha((VOMovingViolations)datos[j], (VOMovingViolations)datos[j-h]); j -= h)
 					exchange(datos, j, j-h);
 			}
 			h = h/3; }
+	}
+	private static boolean lessFecha(VOMovingViolations v, VOMovingViolations w)
+	{
+		// TODO implementar
+		return v.compareFecha(v, w)<0;
 	}
 	/**
 	 * Ordenar datos aplicando el algoritmo MergeSort

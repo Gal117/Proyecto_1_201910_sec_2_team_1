@@ -13,7 +13,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Cola;
-import model.data_structures.ComparadorCode;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.Pila;
@@ -116,10 +115,10 @@ public class Controller {
 				boolean isUnique = false;
 
 				if(verifyObjectIDIsUnique() != null){
-					isUnique = true;
+					isUnique = false;
 				}
 				else{
-					isUnique = false;
+					isUnique = true;
 				}
 				view.printMessage("El objectId es único: " + isUnique);
 				break;
@@ -668,11 +667,9 @@ public class Controller {
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
 				pila.push(obj1);
-
 			}
 		}
 		return pila;
-
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
@@ -681,7 +678,7 @@ public class Controller {
 
 		for (int i=0;i<arreglo.darTamano();i++){
 			LocalDateTime hora1 = convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha());
-			if(hora1.compareTo(fechaInicial) > 0 || hora1.compareTo(fechaFinal) < 0){
+			if(hora1.compareTo(fechaInicial) > 0 && hora1.compareTo(fechaFinal) < 0){
 				cola.enqueue(arreglo.darElem(i));
 			}	
 		}
@@ -746,29 +743,6 @@ public class Controller {
 		return c;
 
 	}
-	private static boolean lessMerge(VOMovingViolations v, VOMovingViolations w)
-	{
-		// TODO implementar
-		String t1=v.darViolationCode();
-		String t2=w.darViolationCode();
-		String t1s=t1.substring(1, t1.length());
-		String t2s=t2.substring(1, t2.length());
-		int T1=Integer.parseInt(t1s);
-		int T2=Integer.parseInt(t2s);
-		if(T1<T2)
-		{
-			return true;
-		}
-		else if(T1>T2)
-		{
-			return false; 
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	public Comparable<VOMovingViolations> [ ] obtenerCopia( ArregloDinamico<VOMovingViolations> arreglo2)
 	{
 		Comparable<VOMovingViolations> [ ] copia = new Comparable[ arreglo2.darTamano() ]; 
@@ -776,11 +750,15 @@ public class Controller {
 		{    copia[i] = arreglo2.darElem(i);    }
 		return copia;
 	}
-	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
-			boolean ascendente6) {
-		// TODO Auto-generated method stub
+	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6, boolean ascendente6) {
+		IStack<VOMovingViolations> s=new Pila<VOMovingViolations>();
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		System.out.println(1);
+		Sort.ordenarShellSort(copia);
+		System.out.println(2);
 
-		return null;
+
+		return s;
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
