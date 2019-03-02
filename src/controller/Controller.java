@@ -716,45 +716,36 @@ public class Controller {
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
-		IQueue<VOViolationCode> c=new Cola<VOViolationCode>();
-		Comparable [] copia= generarMuestra(arreglo.darTamano());
+		IQueue<VOViolationCode> c = new Cola<VOViolationCode>();
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia);
-
-		VOMovingViolations temp=(VOMovingViolations) copia[0];
-		int plata=0;
-		String code=temp.darViolationCode();
-		int contador=0;
-
-		for(int i=0;i<copia.length;i++)
-		{
-			VOMovingViolations actual=(VOMovingViolations) copia[i];
-			int plataActual=actual.darFINEAMT();
-			String codeActual=actual.darViolationCode();
-			double promedio=0;
-			if(code!=codeActual)
-			{
-				if(plataActual<limiteSup5 && plataActual>limiteInf5)
-				{
-					if(contador!=0)
-					{
-						promedio=plata/contador*100;
-					}
-					c.enqueue(new VOViolationCode(codeActual, promedio));
+		VOMovingViolations temp = (VOMovingViolations) copia[0];
+		int plata = 0;
+		String code = temp.darViolationCode();
+		int contador = 0;
+		VOMovingViolations actual = null;
+		for(int i = 0; i < copia.length; i++) {
+			actual = (VOMovingViolations) copia[i];
+			int plataActual = actual.darFINEAMT();
+			String codeActual = actual.darViolationCode();
+			if(!code.equals(codeActual)) {
+				if(plataActual < limiteSup5 && plataActual > limiteInf5) {
+					if(contador != 0)
+						c.enqueue(new VOViolationCode(code, (double) plata/contador));
+					else
+						c.enqueue(new VOViolationCode(code, 0));
 				}
-				code=codeActual;
-				plata=0;
-				contador=0;
-			}
-			else
-			{
-				plata+=plataActual;
+				code = codeActual;
+				plata = 0;
+				contador = 0;
+			} else {
+				plata += plataActual;
 				contador++;
 			}
 		}
 		return c;
+
 	}
-
-
 	private static boolean lessMerge(VOMovingViolations v, VOMovingViolations w)
 	{
 		// TODO implementar
