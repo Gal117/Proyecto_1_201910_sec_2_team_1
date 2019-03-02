@@ -658,7 +658,6 @@ public class Controller {
 		boolean unico = true;
 
 		for(int i = 0; i< arreglo.darTamano() && unico; i++){
-
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
 				unico = false;
@@ -706,7 +705,7 @@ public class Controller {
 		IQueue<VOViolationCode> c=new Cola<VOViolationCode>();
 		Comparable [] copia= generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia);
-		System.out.println(1);
+
 		VOMovingViolations temp=(VOMovingViolations) copia[0];
 		int plata=0;
 		String code=temp.darViolationCode();
@@ -763,6 +762,14 @@ public class Controller {
 		{
 			return false;
 		}
+	}
+
+	public Comparable<VOMovingViolations> [ ] obtenerCopia( ArregloDinamico<VOMovingViolations> arreglo2)
+	{
+		Comparable<VOMovingViolations> [ ] copia = new Comparable[ arreglo2.darTamano() ]; 
+		for ( int i = 0; i < arreglo2.darTamano(); i++)
+		{    copia[i] = arreglo2.darElem(i);    }
+		return copia;
 	}
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
 			boolean ascendente6) {
