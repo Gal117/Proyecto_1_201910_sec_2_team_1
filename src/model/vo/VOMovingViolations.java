@@ -2,6 +2,9 @@ package model.vo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -147,38 +150,38 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 			return  1;
 		else 
 			return 0;
-//		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//		int comparacion = 0;
-//		try {
-//			Date fecha1 = formato.parse(ticketIssueDate);
-//			Date fecha2 = formato.parse(o.ticketIssueDate);
-//			comparacion = fecha1.compareTo(fecha2);
-//
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		if(comparacion < 0){
-//			comparacion =  -1;
-//		}
-//
-//		else if(comparacion > 0){
-//			comparacion =  1;
-//		}
-//
-//		else if(comparacion == 0){
-//			if(this.objectID < o.objectID){
-//				comparacion =   -1;
-//			}
-//			else if(this.objectID > o.objectID){
-//				comparacion = 1;
-//			}
-//
-//			else if(this.objectID == o.objectID){
-//				comparacion =  0;
-//			}
-//		}
-//		return comparacion;
+		//		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		//		int comparacion = 0;
+		//		try {
+		//			Date fecha1 = formato.parse(ticketIssueDate);
+		//			Date fecha2 = formato.parse(o.ticketIssueDate);
+		//			comparacion = fecha1.compareTo(fecha2);
+		//
+		//		} catch (ParseException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
+		//		if(comparacion < 0){
+		//			comparacion =  -1;
+		//		}
+		//
+		//		else if(comparacion > 0){
+		//			comparacion =  1;
+		//		}
+		//
+		//		else if(comparacion == 0){
+		//			if(this.objectID < o.objectID){
+		//				comparacion =   -1;
+		//			}
+		//			else if(this.objectID > o.objectID){
+		//				comparacion = 1;
+		//			}
+		//
+		//			else if(this.objectID == o.objectID){
+		//				comparacion =  0;
+		//			}
+		//		}
+		//		return comparacion;
 	}
 	public int compareToCode(VOMovingViolations o) {
 		// TODO implementar la comparacion "natural" de la clase
@@ -190,6 +193,16 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 		else 
 			return 0;
 	}
+	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
+	{
+		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
+	}
 
-
+	public LocalDateTime darFechaLocalDateTime(){
+		return convertirFecha_Hora_LDT(ticketIssueDate);
+	}
+	
+	public LocalTime darHora(){
+		return darFechaLocalDateTime().toLocalTime();
+	}
 }

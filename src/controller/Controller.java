@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -112,7 +113,14 @@ public class Controller {
 				break;
 
 			case 1:
-				boolean isUnique = controller.verifyObjectIDIsUnique();
+				boolean isUnique = false;
+
+				if(verifyObjectIDIsUnique() != null){
+					isUnique = true;
+				}
+				else{
+					isUnique = false;
+				}
 				view.printMessage("El objectId es único: " + isUnique);
 				break;
 
@@ -653,25 +661,31 @@ public class Controller {
 		return null;
 	}
 
-	public boolean verifyObjectIDIsUnique() {
+	public IStack<VOMovingViolations> verifyObjectIDIsUnique() {
 
-		boolean unico = true;
-
-		for(int i = 0; i< arreglo.darTamano()-1 && unico; i++){
+		IStack<VOMovingViolations> pila = new Pila<VOMovingViolations>();
+		for(int i = 0; i< arreglo.darTamano()-1; i++){
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
-				unico = false;
-				break;
+				pila.push(obj1);
+
 			}
 		}
+		return pila;
 
-		return unico;
 	}
 
-	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
-			LocalDateTime fechaFinal) {
-		// TODO Auto-generated method stub
-		return null;
+	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+
+		IQueue<VOMovingViolations> cola  = new Cola<VOMovingViolations>();
+
+		for (int i=0;i<arreglo.darTamano();i++){
+			LocalDateTime hora1 = convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha());
+			if(hora1.compareTo(fechaInicial) > 0 || hora1.compareTo(fechaFinal) < 0){
+				cola.enqueue(arreglo.darElem(i));
+			}	
+		}
+		return cola;
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
@@ -710,7 +724,7 @@ public class Controller {
 		int plata=0;
 		String code=temp.darViolationCode();
 		int contador=0;
-		
+
 		for(int i=0;i<copia.length;i++)
 		{
 			VOMovingViolations actual=(VOMovingViolations) copia[i];
@@ -823,7 +837,12 @@ public class Controller {
 	 */
 	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
 	{
-		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
+		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
+	}
+
+
+	public LocalTime darHora(String fecha){
+		return convertirFecha_Hora_LDT(fecha).toLocalTime();
 	}
 
 
