@@ -114,22 +114,28 @@ public class Controller {
 
 			case 1:
 				boolean isUnique = false;
-
-				if(verifyObjectIDIsUnique() != null){
-					isUnique = false;
+				
+				if(verifyObjectIDIsUnique().isEmpty()){
+					isUnique = true;
+					view.printMessage("El objectId es único: " + isUnique);
 				}
 				else{
-					isUnique = true;
+					isUnique = false;
+					
 				}
-				view.printMessage("El objectId es único: " + isUnique);
+				for(int i=0;i<verifyObjectIDIsUnique().size();i++)
+				{
+					view.printMessage(""+verifyObjectIDIsUnique().pop().darObjectID());
+				}
+				
 				break;
 
 			case 2:
 
-				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
+				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28-03-2017T15:30:20.000Z)");
 				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
 
-				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017T15:30:20)");
+				view.printMessage("Ingrese la fecha con hora final (Ej : 28-03-2017T15:30:20.000Z)");
 				LocalDateTime fechaFinalReq2A = convertirFecha_Hora_LDT(sc.next());
 
 				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
@@ -155,10 +161,10 @@ public class Controller {
 				String addressId4 = sc.next();
 
 				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017)");
-				LocalDate fechaInicialReq4A = convertirFecha(sc.next());
+				LocalDateTime fechaInicialReq4A = convertirFecha_Hora_LDT(sc.next());
 
 				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017)");
-				LocalDate fechaFinalReq4A = convertirFecha(sc.next());
+				LocalDateTime fechaFinalReq4A = convertirFecha_Hora_LDT(sc.next());
 
 				IStack<VOMovingViolations> resultados4 = controller.getMovingViolationsAtAddressInRange(addressId4, fechaInicialReq4A, fechaFinalReq4A);
 
@@ -550,103 +556,104 @@ public class Controller {
 				}
 
 				lectorSeptiembre.close();
+				CSVReader lectorOctubre = new CSVReader(new FileReader(rutaOctubre));
+				String[] lineaOctubre = lectorOctubre.readNext();
+				while ((lineaOctubre = lectorOctubre.readNext()) != null) {
+					String obID = lineaOctubre[0];
+					int objectID = Integer.parseInt(obID);
+					String address = lineaOctubre[3];
+					String streetSegID = lineaOctubre[4];
+					String fine = lineaOctubre[8];
+					int fineAmt = Integer.parseInt(fine);
+					String total = lineaOctubre[9];
+					int totalPaid = Integer.parseInt(total);
+					String p1 = lineaOctubre[10];
+					int penalty1 = Integer.parseInt(p1);
+					String p2 = lineaOctubre[11];
+					int penalty2 = 0;
+					if(!p2.equals("")){
+						penalty2 = Integer.parseInt(p2);
+					}
+					else{
+						penalty2 = 0;
+					}
+					String accidentIndicator = lineaOctubre[12];
+					String issueDate = lineaOctubre[14];
+					String violationCode = lineaOctubre[15];
+					String violationDesc = lineaOctubre[16];
+
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+
+				}
+				lectorOctubre.close();
+
+				CSVReader lectorNoviembre = new CSVReader(new FileReader(rutaNoviembre));
+				String[] lineaNoviembre = lectorNoviembre.readNext();
+				while ((lineaNoviembre = lectorNoviembre.readNext()) != null) {
+					String obID = lineaNoviembre[0];
+					int objectID = Integer.parseInt(obID);
+					String address = lineaNoviembre[3];
+					String streetSegID = lineaNoviembre[4];
+					String fine = lineaNoviembre[8];
+					int fineAmt = Integer.parseInt(fine);
+					String total = lineaNoviembre[9];
+					int totalPaid = Integer.parseInt(total);
+					String p1 = lineaNoviembre[10];
+					int penalty1 = Integer.parseInt(p1);
+					String p2 = lineaNoviembre[11];
+					int penalty2 = 0;
+					if(!p2.equals("")){
+						penalty2 = Integer.parseInt(p2);
+					}
+					else{
+						penalty2 = 0;
+					}
+					String accidentIndicator = lineaNoviembre[12];
+					String issueDate = lineaNoviembre[14];
+					String violationCode = lineaNoviembre[15];
+					String violationDesc = lineaNoviembre[16];
+
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+
+				}
+				lectorNoviembre.close();
+
+				CSVReader lectorDiciembre = new CSVReader(new FileReader(rutaDiciembre));
+				String[] lineaDiciembre = lectorDiciembre.readNext();
+				while ((lineaDiciembre = lectorDiciembre.readNext()) != null) {
+					String obID = lineaDiciembre[0];
+					int objectID = Integer.parseInt(obID);
+					String address = lineaDiciembre[3];
+					String streetSegID = lineaDiciembre[4];
+					String fine = lineaDiciembre[8];
+					int fineAmt = Integer.parseInt(fine);
+					String total = lineaDiciembre[9];
+					int totalPaid = Integer.parseInt(total);
+					String p1 = lineaDiciembre[10];
+					int penalty1 = Integer.parseInt(p1);
+					String p2 = lineaDiciembre[11];
+					int penalty2 = 0;
+					if(!p2.equals("")){
+						penalty2 = Integer.parseInt(p2);
+					}
+					else{
+						penalty2 = 0;
+					}
+					String accidentIndicator = lineaDiciembre[12];
+					String issueDate = lineaDiciembre[14];
+					String violationCode = lineaDiciembre[15];
+					String violationDesc = lineaDiciembre[16];
+
+					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+
+				}
+				lectorDiciembre.close();
 			}
 
-			CSVReader lectorOctubre = new CSVReader(new FileReader(rutaOctubre));
-			String[] lineaOctubre = lectorOctubre.readNext();
-			while ((lineaOctubre = lectorOctubre.readNext()) != null) {
-				String obID = lineaOctubre[0];
-				int objectID = Integer.parseInt(obID);
-				String address = lineaOctubre[3];
-				String streetSegID = lineaOctubre[4];
-				String fine = lineaOctubre[8];
-				int fineAmt = Integer.parseInt(fine);
-				String total = lineaOctubre[9];
-				int totalPaid = Integer.parseInt(total);
-				String p1 = lineaOctubre[10];
-				int penalty1 = Integer.parseInt(p1);
-				String p2 = lineaOctubre[11];
-				int penalty2 = 0;
-				if(!p2.equals("")){
-					penalty2 = Integer.parseInt(p2);
-				}
-				else{
-					penalty2 = 0;
-				}
-				String accidentIndicator = lineaOctubre[12];
-				String issueDate = lineaOctubre[14];
-				String violationCode = lineaOctubre[15];
-				String violationDesc = lineaOctubre[16];
 
-				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
-			}
-			lectorOctubre.close();
-
-			CSVReader lectorNoviembre = new CSVReader(new FileReader(rutaNoviembre));
-			String[] lineaNoviembre = lectorNoviembre.readNext();
-			while ((lineaNoviembre = lectorNoviembre.readNext()) != null) {
-				String obID = lineaNoviembre[0];
-				int objectID = Integer.parseInt(obID);
-				String address = lineaNoviembre[3];
-				String streetSegID = lineaNoviembre[4];
-				String fine = lineaNoviembre[8];
-				int fineAmt = Integer.parseInt(fine);
-				String total = lineaNoviembre[9];
-				int totalPaid = Integer.parseInt(total);
-				String p1 = lineaNoviembre[10];
-				int penalty1 = Integer.parseInt(p1);
-				String p2 = lineaNoviembre[11];
-				int penalty2 = 0;
-				if(!p2.equals("")){
-					penalty2 = Integer.parseInt(p2);
-				}
-				else{
-					penalty2 = 0;
-				}
-				String accidentIndicator = lineaNoviembre[12];
-				String issueDate = lineaNoviembre[14];
-				String violationCode = lineaNoviembre[15];
-				String violationDesc = lineaNoviembre[16];
-
-				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
-			}
-			lectorNoviembre.close();
-
-			CSVReader lectorDiciembre = new CSVReader(new FileReader(rutaDiciembre));
-			String[] lineaDiciembre = lectorDiciembre.readNext();
-			while ((lineaDiciembre = lectorDiciembre.readNext()) != null) {
-				String obID = lineaDiciembre[0];
-				int objectID = Integer.parseInt(obID);
-				String address = lineaDiciembre[3];
-				String streetSegID = lineaDiciembre[4];
-				String fine = lineaDiciembre[8];
-				int fineAmt = Integer.parseInt(fine);
-				String total = lineaDiciembre[9];
-				int totalPaid = Integer.parseInt(total);
-				String p1 = lineaDiciembre[10];
-				int penalty1 = Integer.parseInt(p1);
-				String p2 = lineaDiciembre[11];
-				int penalty2 = 0;
-				if(!p2.equals("")){
-					penalty2 = Integer.parseInt(p2);
-				}
-				else{
-					penalty2 = 0;
-				}
-				String accidentIndicator = lineaDiciembre[12];
-				String issueDate = lineaDiciembre[14];
-				String violationCode = lineaDiciembre[15];
-				String violationDesc = lineaDiciembre[16];
-
-				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
-			}
-			lectorDiciembre.close();
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -668,6 +675,7 @@ public class Controller {
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
 				pila.push(obj1);
+				
 			}
 		}
 		return pila;
@@ -687,23 +695,25 @@ public class Controller {
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
-		
+
 		double[] lista = new double[2];
 		double accidente = 0.0;
 		double noAccidente = 0.0;
-		
+		double total = 0.0;
 		for(int i = 0; i<arreglo.darTamano(); i++){
-			if(arreglo.darElem(i).darAccidentIndicator().equals("Yes")){
-				String fine1 = Integer.toString(arreglo.darElem(i).darFINEAMT());
-				accidente += Double.parseDouble(fine1);
-			}
-			else if(arreglo.darElem(i).darAccidentIndicator().equals("No")){
-				String fine2 = Integer.toString(arreglo.darElem(i).darFINEAMT());
-				noAccidente += Double.parseDouble(fine2);
+			total ++;
+			if(arreglo.darElem(i).darViolationCode().equals(violationCode3)){
+				if(arreglo.darElem(i).darAccidentIndicator().equals("Yes")){
+					String fine1 = Integer.toString(arreglo.darElem(i).darFINEAMT());
+					accidente += Double.parseDouble(fine1);
+				}
+				else if(arreglo.darElem(i).darAccidentIndicator().equals("No")){
+					String fine2 = Integer.toString(arreglo.darElem(i).darFINEAMT());
+					noAccidente += Double.parseDouble(fine2);
+				}
 			}
 		}
-		
-		double total = accidente + noAccidente;
+
 		double promAccidente = accidente /total;
 		double promNoAccidente = noAccidente/total;
 		lista[0] = promNoAccidente;
@@ -711,10 +721,20 @@ public class Controller {
 		return lista;
 	}
 
-	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
-			LocalDate fechaInicial, LocalDate fechaFinal) {
-
-		return null;
+	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,	LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		IStack<VOMovingViolations> pila = new Pila<VOMovingViolations>();
+		for(int i =0; i< arreglo.darTamano(); i++){
+			if(arreglo.darElem(i).darDireccion().equals(addressId)){
+				if((convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha()).compareTo(fechaInicial) > 0) && ((convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha()).compareTo(fechaFinal) < 0))){
+					pila.push(arreglo.darElem(i));
+				}
+			}
+		}
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.STREETID.comparador,false);
+		
+		
+		return pila;
 	}
 	@SuppressWarnings("unchecked")
 	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
@@ -776,7 +796,7 @@ public class Controller {
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6, boolean ascendente6) {
 		IStack<VOMovingViolations> s=new Pila<VOMovingViolations>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		
+
 
 
 		return s;
@@ -788,35 +808,36 @@ public class Controller {
 		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONDESCRIPTION.comparador,true);
 		LocalTime horaInicial = LocalTime.of(horaInicial7,0);
 		LocalTime horaFinal = LocalTime.of(horaFinal7, 0);
-		
-		for (int i = 0; i<arreglo.darTamano(); i++){
-			if((darHora(arreglo.darElem(i).darFecha()).compareTo(horaInicial) > 0) && (darHora(arreglo.darElem(i).darFecha()).compareTo(horaFinal) < 0)){
-				lista.enqueue(arreglo.darElem(i));
+		VOMovingViolations actual = null;
+		for (int i = 0; i<copia.length; i++){
+			actual = (VOMovingViolations) copia[i];
+			if((darHora(actual.darFecha()).compareTo(horaInicial) > 0) && (darHora(actual.darFecha()).compareTo(horaFinal) < 0)){
+				lista.enqueue(actual);
 			}
 		}
 		return lista;
 	}
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
-				return new double [] {0.0 , 0.0};
+		return new double [] {0.0 , 0.0};
 	}
 
-public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
-		
+	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
+
 		int contador = 0;
 		LocalTime horaInicial = LocalTime.of(horaInicial9,0);
 		LocalTime horaFinal = LocalTime.of(horaFinal9, 0);
-		
+
 		for (int i = 0; i<arreglo.darTamano(); i++){
 			if((darHora(arreglo.darElem(i).darFecha()).compareTo(horaInicial) > 0) && (darHora(arreglo.darElem(i).darFecha()).compareTo(horaFinal) < 0)){
 				contador++;
 			}
 		}
-		
+
 		return contador;
 	}
 
-public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
-		
+	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
+
 		double deuda = 0.0;
 		for (int i = 0; i<arreglo.darTamano(); i++){
 			if((convertirFecha(arreglo.darElem(i).darFecha()).compareTo(fechaInicial11) > 0) && (convertirFecha(arreglo.darElem(i).darFecha()).compareTo(fechaFinal11) < 0)){
