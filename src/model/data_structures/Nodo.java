@@ -22,4 +22,8 @@ public class Nodo<T extends Comparable<T>>{
 	public Nodo<T> darSiguiente(){
 		return siguiente;
 	}
+	public void cambiarElemento(Comparable aux)
+	{
+		this.elemento = (T) aux;
+	}
 }

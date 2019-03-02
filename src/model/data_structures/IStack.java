@@ -26,6 +26,5 @@ public interface IStack<T> extends Iterable<T>{
 	 * Quita y retorna el elemento agregado más recientemente
 	 * @return el elemento agregado más recientemente
 	 */
-	public T pop();
-
+	public T pop();	
 }

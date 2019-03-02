@@ -79,7 +79,7 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 	 * @param pPenal2 extra por infracci�n
 	 */
 	public VOMovingViolations(int pObjectId, String pIssueDate, String pViolationCode, int pFineAMT, String pAddress, String pStreetSegId, int pTotalPaid, String pDescrption, String pAccidentIndicator, int pPenal1, int pPenal2 ){
-		
+
 		objectID = pObjectId;
 		addressID = pAddress;
 		streetSegID = pStreetSegId;
@@ -93,11 +93,10 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 		violationDescription = pDescrption;
 
 	}
-	
 	public int darObjectID(){
 		return objectID;
 	}
-	
+
 	public String darDireccion(){
 		return addressID;
 	}
@@ -105,75 +104,92 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 	public String darIDCalle(){
 		return streetSegID;
 	}
-	
+
 	public int darFINEAMT(){
 		return fineAMT;
 	}
-	
+
 	public int darTotalPaid(){
 		return totalPaid;
 	}
-	
+
 	public int darPenal1(){
 		return penalty1;
 	}
-	
+
 	public int darPenal2(){
 		return penalty2;
 	}
-	
+
 	public String darAccidentIndicator(){
 		return accidentIndicator;
 	}
-	
+
 	public String darFecha(){
 		return ticketIssueDate;
 	}
-	
+
 	public String darViolationCode(){
 		return violationCode;
 	}
-	
+
 	public String darDescripcion(){
 		return violationDescription;
 	}
 
 	@Override
 	public int compareTo(VOMovingViolations o) {
-			// TODO implementar la comparacion "natural" de la clase
-		
-			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-			int comparacion = 0;
-			try {
-				Date fecha1 = formato.parse(ticketIssueDate);
-				Date fecha2 = formato.parse(o.ticketIssueDate);
-				comparacion = fecha1.compareTo(fecha2);
+		// TODO implementar la comparacion "natural" de la clase
+		if(this.violationCode.compareToIgnoreCase(o.violationCode)<0)
+			return  -1;
 
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(comparacion < 0){
-				comparacion =  -1;
-			}
-			
-			else if(comparacion > 0){
-				comparacion =  1;
-			}
-			
-			else if(comparacion == 0){
-				if(this.objectID < o.objectID){
-					comparacion =   -1;
-				}
-				else if(this.objectID > o.objectID){
-					comparacion = 1;
-				}
-				
-				else if(this.objectID == o.objectID){
-					comparacion =  0;
-				}
-			}
-			return comparacion;
-		}
+		else if(this.violationCode.compareToIgnoreCase(o.violationCode)>0)
+			return  1;
+		else 
+			return 0;
+//		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//		int comparacion = 0;
+//		try {
+//			Date fecha1 = formato.parse(ticketIssueDate);
+//			Date fecha2 = formato.parse(o.ticketIssueDate);
+//			comparacion = fecha1.compareTo(fecha2);
+//
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		if(comparacion < 0){
+//			comparacion =  -1;
+//		}
+//
+//		else if(comparacion > 0){
+//			comparacion =  1;
+//		}
+//
+//		else if(comparacion == 0){
+//			if(this.objectID < o.objectID){
+//				comparacion =   -1;
+//			}
+//			else if(this.objectID > o.objectID){
+//				comparacion = 1;
+//			}
+//
+//			else if(this.objectID == o.objectID){
+//				comparacion =  0;
+//			}
+//		}
+//		return comparacion;
+	}
+	public int compareToCode(VOMovingViolations o) {
+		// TODO implementar la comparacion "natural" de la clase
+		if(this.violationCode.compareToIgnoreCase(o.violationCode)<0)
+			return  -1;
+
+		else if(this.violationCode.compareToIgnoreCase(o.violationCode)>0)
+			return  1;
+		else 
+			return 0;
+	}
+
 
 }

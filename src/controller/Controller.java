@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Cola;
+import model.data_structures.ComparadorCode;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.Pila;
@@ -23,6 +25,7 @@ import view.MovingViolationsManagerView;
 public class Controller {
 
 	private MovingViolationsManagerView view;
+	private Comparable<VOMovingViolations> [ ] muestra;
 
 	/**
 	 * Ruta de archivo CSV Enero.
@@ -79,7 +82,7 @@ public class Controller {
 
 	private IStack<VOMovingViolations> pila;
 	private ArregloDinamico<VOMovingViolations> arreglo;
-	private Comparable[] muestra;
+	private static	VOMovingViolations [] aux=null;
 
 
 	public Controller() {
@@ -374,7 +377,7 @@ public class Controller {
 				}
 				lectorAbril.close();
 			}
-			
+
 			else if(numeroCuatrimestre == 2){
 				CSVReader lectorMayo = new CSVReader(new FileReader(rutaMayo));
 				String[] lineaMayo = lectorMayo.readNext();
@@ -407,7 +410,7 @@ public class Controller {
 
 				}
 				lectorMayo.close();
-			
+
 				CSVReader lectorJunio = new CSVReader(new FileReader(rutaJunio));
 				String[] lineaJunio = lectorJunio.readNext();
 				while ((lineaJunio = lectorJunio.readNext()) != null) {
@@ -439,7 +442,7 @@ public class Controller {
 
 				}
 				lectorJunio.close();
-				
+
 				CSVReader lectorJulio = new CSVReader(new FileReader(rutaJulio));
 				String[] lineaJulio = lectorJulio.readNext();
 				while ((lineaJulio = lectorJulio.readNext()) != null) {
@@ -471,7 +474,7 @@ public class Controller {
 
 				}
 				lectorJulio.close();
-				
+
 				CSVReader lectorAgosto = new CSVReader(new FileReader(rutaAgosto));
 				String[] lineaAgosto = lectorAgosto.readNext();
 				while ((lineaAgosto = lectorAgosto.readNext()) != null) {
@@ -503,7 +506,7 @@ public class Controller {
 
 				}
 				lectorAgosto.close();
-				
+
 			}
 
 			else if(numeroCuatrimestre == 3){
@@ -540,7 +543,7 @@ public class Controller {
 
 				lectorSeptiembre.close();
 			}
-			
+
 			CSVReader lectorOctubre = new CSVReader(new FileReader(rutaOctubre));
 			String[] lineaOctubre = lectorOctubre.readNext();
 			while ((lineaOctubre = lectorOctubre.readNext()) != null) {
@@ -572,7 +575,7 @@ public class Controller {
 
 			}
 			lectorOctubre.close();
-		
+
 			CSVReader lectorNoviembre = new CSVReader(new FileReader(rutaNoviembre));
 			String[] lineaNoviembre = lectorNoviembre.readNext();
 			while ((lineaNoviembre = lectorNoviembre.readNext()) != null) {
@@ -604,7 +607,7 @@ public class Controller {
 
 			}
 			lectorNoviembre.close();
-			
+
 			CSVReader lectorDiciembre = new CSVReader(new FileReader(rutaDiciembre));
 			String[] lineaDiciembre = lectorDiciembre.readNext();
 			while ((lineaDiciembre = lectorDiciembre.readNext()) != null) {
@@ -651,18 +654,18 @@ public class Controller {
 	}
 
 	public boolean verifyObjectIDIsUnique() {
-		
+
 		boolean unico = true;
-		
+
 		for(int i = 0; i< arreglo.darTamano() && unico; i++){
-			
+
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
 				unico = false;
 				break;
 			}
 		}
-		
+
 		return unico;
 	}
 
@@ -681,25 +684,48 @@ public class Controller {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@SuppressWarnings("unchecked")
+	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
+	{
+		muestra = new Comparable[ n ];
+		// TODO Llenar la muestra aleatoria con los datos guardados en la estructura de datos
+		ArregloDinamico<VOMovingViolations> e = arreglo;
+
+		int pos=0;
+		while(pos<n)
+		{
+			muestra[pos] = e.darElem(pos);
+			pos++;
+		}
+
+		return muestra;
+
+	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		IQueue<VOViolationCode> c=new Cola<VOViolationCode>();
-		Comparable<VOMovingViolations>[] copia=generarMuestra(arreglo.darTamano());
-		Sort.ordenarQuickSort(copia);
+		Comparable [] copia= generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia);
+		System.out.println(1);
 		VOMovingViolations temp=(VOMovingViolations) copia[0];
 		int plata=0;
 		String code=temp.darViolationCode();
 		int contador=0;
+		
 		for(int i=0;i<copia.length;i++)
 		{
 			VOMovingViolations actual=(VOMovingViolations) copia[i];
 			int plataActual=actual.darFINEAMT();
 			String codeActual=actual.darViolationCode();
+			double promedio=0;
 			if(code!=codeActual)
 			{
 				if(plataActual<limiteSup5 && plataActual>limiteInf5)
 				{
-					int promedio=plata/contador;
+					if(contador!=0)
+					{
+						promedio=plata/contador*100;
+					}
 					c.enqueue(new VOViolationCode(codeActual, promedio));
 				}
 				code=codeActual;
@@ -711,43 +737,48 @@ public class Controller {
 				plata+=plataActual;
 				contador++;
 			}
-
-
-			
 		}
 		return c;
 	}
-	@SuppressWarnings("unchecked")
-	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
+
+
+	private static boolean lessMerge(VOMovingViolations v, VOMovingViolations w)
 	{
-		muestra = new Comparable[ n ];
-		// TODO Llenar la muestra aleatoria con los datos guardados en la estructura de datos
-		ArregloDinamico<VOMovingViolations> e = arreglo;
-		int pos=0;
-		while(pos<n)
+		// TODO implementar
+		String t1=v.darViolationCode();
+		String t2=w.darViolationCode();
+		String t1s=t1.substring(1, t1.length());
+		String t2s=t2.substring(1, t2.length());
+		int T1=Integer.parseInt(t1s);
+		int T2=Integer.parseInt(t2s);
+		if(T1<T2)
 		{
-			muestra[pos] = e.darElem(pos);
- 			pos++;
+			return true;
 		}
-
-		return muestra;
-		
+		else if(T1>T2)
+		{
+			return false; 
+		}
+		else
+		{
+			return false;
+		}
 	}
-
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
 			boolean ascendente6) {
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
-		
+
 		IQueue<VOMovingViolations> lista= new Cola<VOMovingViolations>();
-		
-		
-		
-		
-		
+
+
+
+
+
 		return null;
 	}
 
@@ -787,4 +818,6 @@ public class Controller {
 	{
 		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
 	}
+
+
 }
