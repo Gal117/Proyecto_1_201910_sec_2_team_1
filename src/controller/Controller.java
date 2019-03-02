@@ -686,12 +686,33 @@ public class Controller {
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
-		return new double [] {0.0 , 0.0};
+		
+		double[] lista = new double[2];
+		double accidente = 0.0;
+		double noAccidente = 0.0;
+		
+		for(int i = 0; i<arreglo.darTamano(); i++){
+			if(arreglo.darElem(i).darAccidentIndicator().equals("Yes")){
+				String fine1 = Integer.toString(arreglo.darElem(i).darFINEAMT());
+				accidente += Double.parseDouble(fine1);
+			}
+			else if(arreglo.darElem(i).darAccidentIndicator().equals("No")){
+				String fine2 = Integer.toString(arreglo.darElem(i).darFINEAMT());
+				noAccidente += Double.parseDouble(fine2);
+			}
+		}
+		
+		double total = accidente + noAccidente;
+		double promAccidente = accidente /total;
+		double promNoAccidente = noAccidente/total;
+		lista[0] = promNoAccidente;
+		lista[1] = promAccidente;
+		return lista;
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
 			LocalDate fechaInicial, LocalDate fechaFinal) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 	@SuppressWarnings("unchecked")
