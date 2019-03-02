@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Cola;
+import model.data_structures.Comparaciones;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.Pila;
@@ -736,7 +737,7 @@ public class Controller {
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		IQueue<VOViolationCode> c = new Cola<VOViolationCode>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia);
+		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONCODE.comparador);
 		VOMovingViolations temp = (VOMovingViolations) copia[0];
 		int plata = 0;
 		String code = temp.darViolationCode();
@@ -774,18 +775,26 @@ public class Controller {
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6, boolean ascendente6) {
 		IStack<VOMovingViolations> s=new Pila<VOMovingViolations>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		System.out.println(1);
-		Sort.ordenarShellSort(copia);
-		System.out.println(2);
+		
 
 
 		return s;
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
-
 		IQueue<VOMovingViolations> lista= new Cola<VOMovingViolations>();
 
+		LocalTime horaInicial = LocalTime.of(horaInicial7,0);
+		LocalTime horaFinal = LocalTime.of(horaFinal7, 0);
+		
+		for (int i = 0; i<arreglo.darTamano(); i++){
+			if((darHora(arreglo.darElem(i).darFecha()).compareTo(horaInicial) > 0) && (darHora(arreglo.darElem(i).darFecha()).compareTo(horaFinal) < 0)){
+				lista.enqueue(arreglo.darElem(i));
+			}
+		}
+		
+
+		return lista;
 
 
 

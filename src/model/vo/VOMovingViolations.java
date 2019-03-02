@@ -153,21 +153,7 @@ public class VOMovingViolations implements Comparable<VOMovingViolations>{
 	}
 	@Override
 	public int compareTo(VOMovingViolations o) {
-		if(this.violationCode.compareToIgnoreCase(o.violationCode)<0)
-			return  -1;
-
-		else if(this.violationCode.compareToIgnoreCase(o.violationCode)>0)
-			return  1;
-		else 
-			return 0;
+		return 0;
 	}
-	public int compareFecha(VOMovingViolations o1, VOMovingViolations o2)
-	{
-		if(o1.darFechaLocalDateTime().compareTo(o2.darFechaLocalDateTime())<0)
-				return -1;
-		else if(o1.darFechaLocalDateTime().compareTo(o2.darFechaLocalDateTime())>0)
-			return 1;
-		else
-			return 0;
-	}
+	
 }
