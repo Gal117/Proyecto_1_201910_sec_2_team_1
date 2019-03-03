@@ -688,7 +688,7 @@ public class Controller {
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 
 		IQueue<VOMovingViolations> cola  = new Cola<VOMovingViolations>();
-		System.out.println(arreglo.darTamano());
+
 		for (int i=0;i<arreglo.darTamano();i++){
 			LocalDateTime hora1 = convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha());
 			if(hora1.compareTo(fechaInicial) > 0 && hora1.compareTo(fechaFinal) < 0){
@@ -765,7 +765,6 @@ public class Controller {
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONCODE.comparador,true);
 		VOMovingViolations temp = (VOMovingViolations) copia[0];
-		System.out.println(copia.length);
 		int plata = 0;
 		String code = temp.darViolationCode();
 		int contador = 0;
