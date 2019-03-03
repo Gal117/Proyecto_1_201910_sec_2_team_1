@@ -858,7 +858,7 @@ public class Controller {
 		{
 			diferencias+=(numero.darElem(i)-promedio)*(numero.darElem(i)-promedio);
 		}
-		p=diferencias/p;
+		p=diferencias/contador;
 		double sqrt=Math.sqrt(p);
 		return new double [] {promedio , sqrt};
 
