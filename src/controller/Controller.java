@@ -146,7 +146,8 @@ public class Controller {
 				break;
 
 			case 3:
-
+				
+				view.printMessage("tamano arreglo:" + arreglo.darTamano());
 				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
 				String violationCode3 = sc.next();
 
@@ -363,7 +364,7 @@ public class Controller {
 
 				}
 				lectorMarzo.close();
-
+				
 				CSVReader lectorAbril = new CSVReader(new FileReader(rutaAbril));
 				String[] lineaAbril = lectorAbril.readNext();
 				while ((lineaAbril = lectorAbril.readNext()) != null) {
@@ -393,6 +394,7 @@ public class Controller {
 							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));				
 				}
 				lectorAbril.close();
+
 			}
 
 			else if(numeroCuatrimestre == 2){
@@ -888,6 +890,7 @@ public class Controller {
 		return deuda;
 	}
 	
+
 	public double[] violationsPerHour(){
 		
 		double[] lista = new double[24];
@@ -895,14 +898,10 @@ public class Controller {
 		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador,false);
 		int temp = 00;
 		int cont = 0;
-		System.out.println("hola");
-		System.out.println(copia.length);
-		
 		for(int i = 0; i< copia.length; i++){
-			System.out.println(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour());
+
 			if(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour() == temp){
 				cont++;
-				System.out.println(cont);
 			}
 			else if(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour() != temp){
 				int horaNueva = convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour();
@@ -921,8 +920,6 @@ public class Controller {
 		double promedio=0;
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador,true);
-		
-		System.out.println(arreglo.darTamano());
 		VOMovingViolations temp = (VOMovingViolations) copia[0];
 		Month m=temp.darFechaLocalDateTime().getMonth();
 		VOMovingViolations actual = null;
