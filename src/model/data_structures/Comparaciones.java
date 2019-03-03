@@ -50,6 +50,35 @@ public enum Comparaciones implements Serializable{
 
 
 	}),
+	HORA("Hora", new SerializableComparator<VOMovingViolations>() {
+		/**
+		 * 
+		 */
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1456L;
+
+		@Override
+		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
+			// TODO Auto-generated method stub
+
+			int c= o2.darFechaLocalDateTime().getHour()-o1.darFechaLocalDateTime().getHour();
+			if(c<0)
+				return -1;
+			else if(c>0)
+			{
+				return 1;
+			}
+			else
+				return 0;
+		}
+
+
+
+
+	}),
 	STREETID("StreetId", new SerializableComparator<VOMovingViolations>() {
 
 		/**

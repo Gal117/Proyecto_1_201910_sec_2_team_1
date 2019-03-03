@@ -82,16 +82,15 @@ public class Controller {
 	 */
 	public static final String rutaDiciembre = "./data/Moving_Violations_Issued_in_December_2018.csv";
 
-	private IStack<VOMovingViolations> pila;
 	private ArregloDinamico<VOMovingViolations> arreglo;
-	private static	VOMovingViolations [] aux=null;
+	private int cuatrimestre;
 
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
 		//TODO inicializar pila 
-		pila=new Pila<VOMovingViolations>();
 		arreglo=new ArregloDinamico<VOMovingViolations>(160000);
+		cuatrimestre=0;
 	}
 
 	public void run() {
@@ -110,25 +109,26 @@ public class Controller {
 			case 0:
 				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
 				int numeroCuatrimestre = sc.nextInt();
+				cuatrimestre=numeroCuatrimestre;
 				controller.loadMovingViolations(numeroCuatrimestre);
 				break;
 
 			case 1:
 				boolean isUnique = false;
-				
+
 				if(verifyObjectIDIsUnique().isEmpty()){
 					isUnique = true;
 					view.printMessage("El objectId es único: " + isUnique);
 				}
 				else{
 					isUnique = false;
-					
+
 				}
 				for(int i=0;i<verifyObjectIDIsUnique().size();i++)
 				{
 					view.printMessage(""+verifyObjectIDIsUnique().pop().darObjectID());
 				}
-				
+
 				break;
 
 			case 2:
@@ -146,7 +146,7 @@ public class Controller {
 				break;
 
 			case 3:
-				
+
 				view.printMessage("tamano arreglo:" + arreglo.darTamano());
 				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
 				String violationCode3 = sc.next();
@@ -236,8 +236,7 @@ public class Controller {
 				break;
 
 			case 10:
-				double[] datos = violationsPerHour();
-				view.printMovingViolationsByHourReq10(datos);
+				view.printMovingViolationsByHourReq10(violationsPerHour());
 				break;
 
 			case 11:
@@ -364,7 +363,7 @@ public class Controller {
 
 				}
 				lectorMarzo.close();
-				
+
 				CSVReader lectorAbril = new CSVReader(new FileReader(rutaAbril));
 				String[] lineaAbril = lectorAbril.readNext();
 				while ((lineaAbril = lectorAbril.readNext()) != null) {
@@ -663,16 +662,14 @@ public class Controller {
 
 			e.printStackTrace();
 		}
+		System.out.println(arreglo.darTamano());
 	}
-
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
 		return null;
 	}
-
 	public IStack <VOMovingViolations> nLastAccidents(int n) {
 		return null;
 	}
-
 	public IStack<VOMovingViolations> verifyObjectIDIsUnique() {
 
 		IStack<VOMovingViolations> pila = new Pila<VOMovingViolations>();
@@ -680,17 +677,13 @@ public class Controller {
 			VOMovingViolations obj1 = arreglo.darElem(i);
 			if(arreglo.darElem(i+1).darObjectID() == obj1.darObjectID()){
 				pila.push(obj1);
-				
+
 			}
 		}
-
 		return pila;
 	}
-
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-
 		IQueue<VOMovingViolations> cola  = new Cola<VOMovingViolations>();
-
 		for (int i=0;i<arreglo.darTamano();i++){
 			LocalDateTime hora1 = convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha());
 			if(hora1.compareTo(fechaInicial) > 0 && hora1.compareTo(fechaFinal) < 0){
@@ -699,9 +692,7 @@ public class Controller {
 		}
 		return cola;
 	}
-
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
-
 		double[] lista = new double[2];
 		double accidente = 0.0;
 		double noAccidente = 0.0;
@@ -719,19 +710,16 @@ public class Controller {
 				}
 			}
 		}
-
 		double promAccidente = accidente /total;
 		double promNoAccidente = noAccidente/total;
 		lista[0] = promNoAccidente;
 		lista[1] = promAccidente;
 		return lista;
 	}
-
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,	LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 		IStack<VOMovingViolations> pila = new Pila<VOMovingViolations>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia, Comparaciones.STREETID.comparador,true);
-		
 		for(int i =0; i< copia.length; i++){
 			VOMovingViolations actual = (VOMovingViolations) copia[i];
 			if(actual.darDireccion().equals(addressId)){
@@ -740,8 +728,6 @@ public class Controller {
 				}
 			}
 		}
-		
-		
 		return pila;
 	}
 	@SuppressWarnings("unchecked")
@@ -757,11 +743,8 @@ public class Controller {
 			muestra[pos] = e.darElem(pos);
 			pos++;
 		}
-
 		return muestra;
-
 	}
-
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		IQueue<VOViolationCode> c = new Cola<VOViolationCode>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
@@ -775,19 +758,23 @@ public class Controller {
 			actual = (VOMovingViolations) copia[i];
 			int plataActual = actual.darFINEAMT();
 			String codeActual = actual.darViolationCode();
-			if(!code.equals(codeActual)) {
-				if(plataActual < limiteSup5 && plataActual > limiteInf5) {
-					if(contador != 0)
-						c.enqueue(new VOViolationCode(code, (double) plata/contador));
-					else
-						c.enqueue(new VOViolationCode(code, 0));
-				}
+			if(!code.equals(codeActual)) 
+			{
+				if(contador != 0)
+					c.enqueue(new VOViolationCode(code, (double) plata/contador));
+				else
+					c.enqueue(new VOViolationCode(code, 0));
 				code = codeActual;
-				plata = 0;
-				contador = 0;
-			} else {
-				plata += plataActual;
-				contador++;
+				plata = plataActual;
+				contador = 1;
+			} 
+			else 
+			{
+				if(plataActual < limiteSup5 && plataActual > limiteInf5) 
+				{
+					plata += plataActual;
+					contador++;
+				}
 			}
 		}
 		return c;
@@ -804,7 +791,7 @@ public class Controller {
 		IStack<VOMovingViolations> s=new Pila<VOMovingViolations>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador, ascendente6);
-		
+
 		for(int i=0;i<copia.length;i++)
 		{
 			VOMovingViolations actual=(VOMovingViolations) copia[i];
@@ -815,7 +802,6 @@ public class Controller {
 		}
 		return s;
 	}
-
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
 		IQueue<VOMovingViolations> lista= new Cola<VOMovingViolations>();
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
@@ -831,7 +817,6 @@ public class Controller {
 		}
 		return lista;
 	}
-	
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
 		ArregloDinamico<Integer> numero=new ArregloDinamico<>(4000);
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
@@ -889,32 +874,35 @@ public class Controller {
 		}
 		return deuda;
 	}
-	
+
 
 	public double[] violationsPerHour(){
-		
-		double[] lista = new double[24];
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador,false);
-		int temp = 00;
-		int cont = 0;
-		for(int i = 0; i< copia.length; i++){
 
-			if(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour() == temp){
+		double[] lista = new double[24];
+		loadMovingViolations(cuatrimestre);
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.HORA.comparador,false);
+//				for(int i=0;i<copia.length;i++){
+//					VOMovingViolations actual=(VOMovingViolations)copia[i];
+//					System.out.println(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour());
+//				}
+		int hora = convertirFecha_Hora_LDT(((VOMovingViolations) copia[0]).darFecha()).getHour();
+		int cont = 0;
+		System.out.println(arreglo.darTamano());
+		for(int i = 0; i< copia.length; i++){
+			if(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour() == hora){
 				cont++;
 			}
-			else if(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour() != temp){
+			else
+			{
 				int horaNueva = convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour();
-				lista[temp] = (cont/copia.length)*100;
+				lista[hora] = (cont/arreglo.darTamano())*100;
 				cont = 1;
-				temp = horaNueva;
-				
+				hora = horaNueva;
 			}
 		}
-		
 		return lista;
 	}
-	
 	public ArregloDinamico<Double> deudaPromedioMensual()
 	{
 		double promedio=0;
