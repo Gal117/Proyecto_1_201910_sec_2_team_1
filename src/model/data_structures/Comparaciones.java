@@ -43,7 +43,7 @@ public enum Comparaciones implements Serializable{
 		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
 			// TODO Auto-generated method stub
 
-			return o1.darFechaLocalDateTime().compareTo(o2.darFechaLocalDateTime());
+			return o2.darFechaLocalDateTime().compareTo(o1.darFechaLocalDateTime());
 		}
 
 
