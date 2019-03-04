@@ -107,14 +107,10 @@ public class MovingViolationsManagerView
 			int total = Integer.parseInt(datos[0]);
 			double deuda = Double.parseDouble(datos[1]);
 			double dato = (double)(((double) deuda/total) * 100);
-			System.out.println(i + "|" + dato);
+			System.out.println((i+1) + "|" + dato);
 		}
-//		System.out.println("01| X");
-//		System.out.println("02| XX");
-//		System.out.println("03 | XXXXXX");
-//		System.out.println("04 | XXXXXXXXXX");
-//		System.out.println("");
-//		System.out.println("Cada X representa $YYYY USD");
+		System.out.println(" ");
+		System.out.println("Cada X representa $YYYY USD");
 	}
 	
 }

@@ -1,12 +1,12 @@
-/**
- * Se copiaron los metodos de ordenamiento Shell, Merge y Quick del libro Algorithhms 4th Edition by Robert Sedgewick, Kevin Wayne.pdf
- */
+
 package model.util;
 
 import java.util.Comparator;
 
 import model.vo.VOMovingViolations;
-
+/**
+ * Se copiaron los metodos de ordenamiento Shell, Merge y Quick del libro Algorithhms 4th Edition by Robert Sedgewick, Kevin Wayne.pdf
+ */
 public class Sort {
 
 	private static	Comparable [] aux=null;
