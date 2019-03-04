@@ -663,7 +663,7 @@ public class Controller {
 
 			e.printStackTrace();
 		}
-		System.out.println(arreglo.darTamano());
+
 	}
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
 		return null;
@@ -855,7 +855,6 @@ public class Controller {
 		int contador = 0;
 		LocalTime horaInicial = LocalTime.of(horaInicial9,0);
 		LocalTime horaFinal = LocalTime.of(horaFinal9, 0);
-		System.out.println(arreglo.darTamano());
 		for (int i = 0; i<arreglo.darTamano(); i++){
 			if((darHora(arreglo.darElem(i).darFecha()).compareTo(horaInicial) > 0) && (darHora(arreglo.darElem(i).darFecha()).compareTo(horaFinal) < 0)){
 				contador++;

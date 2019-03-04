@@ -39,7 +39,7 @@ public class ArregloDinamico<T>{
                 {
                  	 elems[i] = copia[i];
                 } 
-        	    System.out.println("Arreglo lleno: " + tamanoActual + " - Arreglo duplicado: " + tamanoArreglo);
+        	    
            }	
            elems[tamanoActual] = dato;
            tamanoActual++;
