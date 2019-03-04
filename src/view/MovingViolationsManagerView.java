@@ -98,16 +98,13 @@ public class MovingViolationsManagerView
 
 	}
 	
-	public void printTotalDebtbyMonthReq12(String[] arreglo) {
+	public void printTotalDebtbyMonthReq12(double[] arreglo) {
 		System.out.println("Deuda acumulada por mes de infracciones. 2018");
 		System.out.println("Mes| Dinero");
 
 		for(int i=0;i<arreglo.length;i++){
-			String[] datos = arreglo[i].split("-");
-			int total = Integer.parseInt(datos[0]);
-			double deuda = Double.parseDouble(datos[1]);
-			double dato = (double)(((double) deuda/total) * 100);
-			System.out.println((i+1) + "|" + dato);
+			
+			System.out.println((i+1) + "|" + arreglo[i]);
 		}
 		System.out.println(" ");
 		System.out.println("Cada X representa $YYYY USD");
