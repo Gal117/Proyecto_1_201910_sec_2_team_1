@@ -1,8 +1,13 @@
 package model.data_structures;
 
 import java.io.Serializable;
-
 import model.vo.VOMovingViolations;
+
+/**
+ * 
+ * 
+ *
+ */
 public enum Comparaciones implements Serializable{
 	VIOLATIONCODE("Codigo", new SerializableComparator<VOMovingViolations>() {
 		/**

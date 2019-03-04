@@ -3,6 +3,12 @@ package model.data_structures;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+/**
+ * 
+ * Este código fue tomado del Taller 3 de este curso, también debidamente citado.
+ *
+ * @param <T> Objeto a guardar en esta estructura
+ */
 public class Iterador <T extends Comparable<T>> implements Iterator<T>{
 
 

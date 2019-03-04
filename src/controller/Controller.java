@@ -236,7 +236,8 @@ public class Controller {
 				break;
 
 			case 10:
-				view.printMovingViolationsByHourReq10(violationsPerHour());
+
+				view.printMovingViolationsByHourReq10(controller.violationsPerHour(), controller.arreglo.darTamano() );
 				break;
 
 			case 11:
@@ -251,8 +252,8 @@ public class Controller {
 				break;
 
 			case 12:	
-				ArregloDinamico<Double> req12 = deudaPromedioMensual();
-				view.printTotalDebtbyMonthReq12(req12);
+
+				view.printTotalDebtbyMonthReq12(controller.deudaAcumuladaMensual());
 
 				break;
 
@@ -854,7 +855,7 @@ public class Controller {
 		int contador = 0;
 		LocalTime horaInicial = LocalTime.of(horaInicial9,0);
 		LocalTime horaFinal = LocalTime.of(horaFinal9, 0);
-
+		System.out.println(arreglo.darTamano());
 		for (int i = 0; i<arreglo.darTamano(); i++){
 			if((darHora(arreglo.darElem(i).darFecha()).compareTo(horaInicial) > 0) && (darHora(arreglo.darElem(i).darFecha()).compareTo(horaFinal) < 0)){
 				contador++;
@@ -867,72 +868,61 @@ public class Controller {
 	public double totalDebt(LocalDateTime fechaInicial11, LocalDateTime fechaFinal11) {
 
 		double deuda = 0.0;
+
 		for (int i = 0; i<arreglo.darTamano(); i++){
 			if((convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha()).compareTo(fechaInicial11) > 0) && (convertirFecha_Hora_LDT(arreglo.darElem(i).darFecha()).compareTo(fechaFinal11) < 0)){
-				deuda += arreglo.darElem(i).darFINEAMT() + arreglo.darElem(i).darPenal1() + arreglo.darElem(i).darPenal2() + arreglo.darElem(i).darTotalPaid();
+				deuda +=  arreglo.darElem(i).darTotalPaid() - (arreglo.darElem(i).darFINEAMT() + arreglo.darElem(i).darPenal1() + arreglo.darElem(i).darPenal2());
 			}
 		}
-		return deuda;
+		return Math.abs(deuda);
 	}
 
 
-	public double[] violationsPerHour(){
+	public int[] violationsPerHour(){
 
-		double[] lista = new double[24];
-		loadMovingViolations(cuatrimestre);
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia, Comparaciones.HORA.comparador,false);
-//				for(int i=0;i<copia.length;i++){
-//					VOMovingViolations actual=(VOMovingViolations)copia[i];
-//					System.out.println(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour());
-//				}
-		int hora = convertirFecha_Hora_LDT(((VOMovingViolations) copia[0]).darFecha()).getHour();
-		int cont = 0;
-		System.out.println(arreglo.darTamano());
-		for(int i = 0; i< copia.length; i++){
-			if(convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour() == hora){
-				cont++;
-			}
-			else
-			{
-				int horaNueva = convertirFecha_Hora_LDT(((VOMovingViolations) copia[i]).darFecha()).getHour();
-				lista[hora] = (cont/arreglo.darTamano())*100;
-				cont = 1;
-				hora = horaNueva;
+		int[] lista = new int[24];
+
+		for(int i = 0; i<arreglo.darTamano(); i++){
+			VOMovingViolations act = arreglo.darElem(i);
+			if(act.darAccidentIndicator().equals("Yes")){
+				lista[convertirFecha_Hora_LDT(act.darFecha()).getHour()]++;
 			}
 		}
+	
 		return lista;
 	}
-	public ArregloDinamico<Double> deudaPromedioMensual()
+	public String[] deudaAcumuladaMensual()
 	{
-		double promedio=0;
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador,true);
-		VOMovingViolations temp = (VOMovingViolations) copia[0];
-		Month m=temp.darFechaLocalDateTime().getMonth();
-		VOMovingViolations actual = null;
-		double contador=0;
-		double plata=0;
-		ArregloDinamico<Double> promedios=new ArregloDinamico<>(4);
-		for(int i=0;i<copia.length-1;i++)
-		{
-			actual=(VOMovingViolations)copia[i];
-			Month mActual=actual.darFechaLocalDateTime().getMonth();
-			if(!m.equals(mActual))
-			{
-				promedios.agregar(plata/contador);
-				contador=0;
-				plata=0;
+		double[] deuda = new double[4];
+		int[] contMes = new int [4];
+		String[] resp = new String[4];
+		for(int i =0; i<arreglo.darTamano();i++){
+			VOMovingViolations actual = arreglo.darElem(i);
+			if(convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 1 || convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 5 ||convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 9 ){
+				 
+				contMes[0]++;
+				deuda[0] = Math.abs(actual.darTotalPaid() -(actual.darFINEAMT() + actual.darPenal1() + actual.darPenal2()));
 			}
-			else
-			{
-				contador++;
-				plata+=actual.darFINEAMT()+actual.darPenal1()+actual.darPenal2()+actual.darTotalPaid();
+			if(convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 2 || convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 6 ||convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 10 ){
+				contMes[1]++;
+				deuda[1] = Math.abs(actual.darTotalPaid() -(actual.darFINEAMT() + actual.darPenal1() + actual.darPenal2()));
 			}
+			if(convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 3 || convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 7 ||convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 11 ){
+				contMes[2]++;
+				deuda[2] = Math.abs(actual.darTotalPaid() -(actual.darFINEAMT() + actual.darPenal1() + actual.darPenal2()));
+			}
+			if(convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 4 || convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 8 ||convertirFecha_Hora_LDT(actual.darFecha()).getMonthValue() == 12 ){
+				contMes[3]++;
+				deuda[3] = Math.abs(actual.darTotalPaid() -(actual.darFINEAMT() + actual.darPenal1() + actual.darPenal2()));
+			}
+			
 		}
-		return promedios;
-
-
+		
+		resp[0] = contMes[0] + "-" + deuda[0];
+		resp[1] = (contMes[0]+contMes[1]) + "-" + (deuda[0] + deuda[1]);
+		resp[2] = (contMes[0]+contMes[1]+contMes[2]) + "-" + (deuda[0] + deuda[1]+ deuda[2]);
+		resp[3] = (contMes[0]+contMes[1]+contMes[2]+contMes[3]) + "-" + (deuda[0] + deuda[1]+ deuda[2]+ deuda[3]);
+		return resp;
 	}
 	/**
 	 * Convertir fecha a un objeto LocalDate

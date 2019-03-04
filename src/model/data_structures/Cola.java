@@ -1,7 +1,12 @@
 package model.data_structures;
 
 import java.util.Iterator;
-
+/**
+ * 
+ * Este código fue tomado del Taller 3 de este curso, también debidamente citado.
+ *
+ * @param <T> Objeto a guardar en esta estructura
+ */
 public class Cola<T extends Comparable<T>> implements IQueue<T>{
 
 	private Nodo<T> primerNodo;
