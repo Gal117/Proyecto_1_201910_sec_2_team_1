@@ -657,8 +657,6 @@ public class Controller {
 				}
 				lectorDiciembre.close();
 			}
-
-
 		} catch (IOException e) {
 
 			e.printStackTrace();

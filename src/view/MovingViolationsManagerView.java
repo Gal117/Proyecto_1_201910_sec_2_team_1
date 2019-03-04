@@ -90,24 +90,41 @@ public class MovingViolationsManagerView
 	public void printMovingViolationsByHourReq10(int[] datos, int tam) {
 		System.out.println("Porcentaje de infracciones que tuvieron accidentes por hora. 2018");
 		System.out.println("Hora| % de accidentes");
-
 		for(int i =0; i<datos.length; i++){
-			double dato = (double) (((double) datos[i]/tam) *100);
-			System.out.println( i + "|" + dato );
+			double dato = (double) (((double) datos[i]/tam) *100);			
+			String x="";
+			for(int h=0;h<dato;h++)
+			{
+				x=x+"X";
+			}
+			String cero="";
+			if(i<10)
+			{
+				cero="0";
+			}
+			System.out.println(cero+ i + "|"+ x);
 		}
-
+		System.out.println("Cada x hace referencia 1%");
 	}
 	
 	public void printTotalDebtbyMonthReq12(double[] arreglo) {
 		System.out.println("Deuda acumulada por mes de infracciones. 2018");
 		System.out.println("Mes| Dinero");
-
-		for(int i=0;i<arreglo.length;i++){
-			
-			System.out.println((i+1) + "|" + arreglo[i]);
+		for(int i =0; i<arreglo.length; i++){
+			String x="";
+			for(int h=0;h<arreglo[i];h+=1000000)
+			{
+				x=x+"X";
+			}
+			String cero="";
+			if(i<10)
+			{
+				cero="0";
+			}
+			System.out.println(cero+ i + "|"+ x);
 		}
-		System.out.println(" ");
-		System.out.println("Cada X representa $YYYY USD");
+
+		System.out.println("Cada X representa $1000000 USD");
 	}
 	
 }
